@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% for post in posts %}
+        <article class="blog-post">
+            <h2 class="blog-post-title">{{ post.title }}</h2>
+            {% set time =  post.created_at.strftime("%Y-%b-%d %H-%M-%S") %}
+            <p class="blog-post-meta">{{ time }}<a class="px-3" href="#">Mark</a></p>
+            {{ post.body }}
+            <p class="blog-post-meta"><a href="#">Комментарии</a></p>
+        </article>
+    {% endfor %}
+    <div class="blog-pagination" aria-label="Pagination">
+        <a class="btn btn-outline-primary" href="#">Older</a>
+        <a class="btn btn-outline-secondary disabled" href="#" tabindex="-1" aria-disabled="true">Newer</a>
+    </div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% from "macros.html" import render_field_with_errors, render_field %}
+
+{% block content %}
+    <div class="container">
+        <h3 class="text-center">Новый пост</h3>
+        <form class="form-row" action="{{ url_for('new_post') }}" method="POST">
+            {{ add_post_form.hidden_tag() }}
+            {{ render_field_with_errors(add_post_form.title, class="form-control") }}
+            {{ render_field_with_errors(add_post_form.post, class="form-control") }}
+            {{ render_field(add_post_form.button, class="btn btn-lg btn-primary") }}
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% set nav = {
+  "blog": {
+    "name": "Мой блог",
+    "active": "active",
+  },
+  "feed": {
+    "name": "Лента",
+    "active": "",
+  },
+  "links": {
+    "name": "Ссылки",
+    "active": "",
+  }
+} %}
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Блоги</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                {% for item in nav %}
+                    {% if request.endpoint == item %}
+                        {% set nav_active = "active" %}
+                    {% else %}
+                        {% set nav_active = "" %}
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link {{nav_active}}" aria-current="page"
+                           href="{{ url_for(item) }}">
+                            {{ nav[item]["name"] }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <a class="btn btn-sm btn-outline-secondary mx-5" href="{{ url_for_security('login') }}">Войти</a>
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</nav>
