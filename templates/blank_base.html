@@ -34,24 +34,16 @@
 
 <main class="container">
     <div class="row g-5">
-        <section class="col-md-9">
+        <section class="col-md">
             {% block content %}
 
             {% endblock %}
-        </section>
-        <section class="col-md-3">
-
-            {% include "articles.html" %}
-
         </section>
     </div>
 </main>
 <script src="{{ url_for('static',filename='js/bootstrap.bundle.min.js') }}"></script>
 <footer class="blog-footer">
     {% block footer %}
-        <p>
-            <a href="#">Back to top</a>
-        </p>
     {% endblock %}
 </footer>
 </body>

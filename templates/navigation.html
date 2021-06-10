@@ -28,14 +28,21 @@
                         {% set nav_active = "" %}
                     {% endif %}
                     <li class="nav-item">
-                        <a class="nav-link {{nav_active}}" aria-current="page"
+                        <a class="nav-link {{ nav_active }}" aria-current="page"
                            href="{{ url_for(item) }}">
                             {{ nav[item]["name"] }}
                         </a>
                     </li>
                 {% endfor %}
             </ul>
-            <a class="btn btn-sm btn-outline-secondary mx-5" href="{{ url_for_security('login') }}">Войти</a>
+            {% if current_user and not current_user.is_anonymous %}
+                {% set name_user = current_user.email.split("@")[0] %}
+                {% set href = url_for('office') %}
+            {% else %}
+                {% set name_user = 'Войти' %}
+                {% set href = url_for_security('login') %}
+            {% endif %}
+            <a class="btn btn-sm btn-outline-secondary mx-5" href="{{ href }}">{{ name_user }}</a>
             <form class="d-flex">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>

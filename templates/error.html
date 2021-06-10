@@ -1,0 +1,12 @@
+{% extends 'blank_base.html' %}
+{% block content %}
+    <div class="text-center">
+        {% if error == 404 %}
+            <h2>Ошибка {{ error }}</h2>
+            <h3>Страница не найдена</h3>
+        {% elif error == 500 %}
+            <h2>Ошибка {{ error }}</h2>
+            <h3>Внутренняя ошибка сервера</h3>
+        {% endif %}
+    </div>
+{% endblock %}

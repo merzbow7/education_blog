@@ -1,6 +1,7 @@
-from flask import render_template, redirect, url_for, request
+from flask import render_template, redirect, url_for
 from app import app, db
 from models import Post
+from flask_security import current_user, url_for_security
 from forms import AddNewPostForm
 from datetime import datetime
 
@@ -14,6 +15,13 @@ def index():
 def blog():
     posts = Post.query.order_by(Post.created_at.desc())
     return render_template("index.html", posts=posts)
+
+
+@app.route("/office")
+def office():
+    if current_user.has_role('admin'):
+        return redirect(url_for('admin.index'))
+    return render_template("office.html")
 
 
 @app.route("/newpost", methods=["POST", "GET"])
@@ -43,3 +51,13 @@ def links():
         "https://flask-migrate.readthedocs.io/en/latest/",
         "https://flask-security-too.readthedocs.io/en/stable/index.html")
     return render_template("links.html", links=links)
+
+
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template('error.html', error=404), 404
+
+
+@app.errorhandler(500)
+def internal_error(error):
+    return render_template('error.html', error=500), 500
