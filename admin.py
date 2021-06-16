@@ -2,8 +2,6 @@ from flask import request, redirect, abort, url_for
 from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from flask_security import current_user
-from flask_admin.model.form import InlineFormAdmin
-from flask_admin.contrib.sqla.filters import BooleanEqualFilter
 
 from app import app, db
 from models import User, Role, Post, Comment
@@ -39,7 +37,7 @@ class AdminIndex(AccessModelView, AdminIndexView):
 
 class PostModelView(BaseAdminModelView):
     column_list = ('title', 'body')
-    form_columns = ('title', 'body')
+    form_columns = ('user_id', 'hash_name', 'title', 'body')
 
 
 class UserModelView(BaseAdminModelView):
@@ -56,8 +54,7 @@ class CommentModelView(BaseAdminModelView):
     column_list = ['body']
 
 
-admin = Admin(app, url='/', index_view=AdminIndex())
-
+admin = Admin(app, "Admin", url='/admin', index_view=AdminIndex())
 
 admin.add_view(UserModelView(User, db.session))
 admin.add_view(RoleModelView(Role, db.session))

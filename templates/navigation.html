@@ -14,13 +14,17 @@
 } %}
 <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Блоги</a>
+        <a class="navbar-brand" href="{{ url_for('index') }}">Блоги</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                {% if not current_user.is_authenticated %}
+                    {% set class_disabled = 'disabled' %}
+                    {% set aria_disabled = 'aria-disabled="true"' %}
+                {% endif %}
                 {% for item in nav %}
                     {% if request.endpoint == item %}
                         {% set nav_active = "active" %}
@@ -28,7 +32,8 @@
                         {% set nav_active = "" %}
                     {% endif %}
                     <li class="nav-item">
-                        <a class="nav-link {{ nav_active }}" aria-current="page"
+                        <a class="nav-link {{ nav_active }} {{ class_disabled if item != "links" else "" }}"
+                           aria-current="page" {{ aria_disabled if item != "links" else "" }}
                            href="{{ url_for(item) }}">
                             {{ nav[item]["name"] }}
                         </a>
@@ -37,7 +42,7 @@
             </ul>
             {% if current_user and not current_user.is_anonymous %}
                 {% set name_user = current_user.email.split("@")[0] %}
-                {% set href = url_for('office') %}
+                {% set href = url_for('private_profile') %}
             {% else %}
                 {% set name_user = 'Войти' %}
                 {% set href = url_for_security('login') %}

@@ -17,3 +17,4 @@ migrate = Migrate(app, db)
 manager = Manager(app)
 
 
+

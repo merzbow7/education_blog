@@ -2,12 +2,21 @@
 
 {% block content %}
     {% for post in posts %}
-        <article class="blog-post">
-            <h2 class="blog-post-title">{{ post.title }}</h2>
-            {% set time =  post.created_at.strftime("%Y-%b-%d %H-%M-%S") %}
-            <p class="blog-post-meta">{{ time }}<a class="px-3" href="#">Mark</a></p>
-            {{ post.body }}
-            <p class="blog-post-meta"><a href="#">Комментарии</a></p>
+        {% set post_href = url_for("post", post_hash=post.hash_name) %}
+        <article class="blog-post" onclick="window.location.href = '{{ post_href }}'">
+            <a class="text-decoration-none link-dark" href="{{ post_href }}">
+                <h2 class="blog-post-title">{{ post.title }}</h2>
+            </a>
+            {% set time =  post.created_at.strftime("%Y-%b-%d   %H:%M") %}
+            <p class="blog-post-meta">{{ time }}
+                {% set user_profile = post.user.username %}
+                <a class="px-3"
+                   href="{{ url_for('user', username= post.user.username ) }}">{{ post.user.username }}</a>
+            </p>
+            <p>{{ post.body }}</p>
+            {% set comments_couut = post.comments.all()|length %}
+            <p class="blog-post-meta border-secondary border-top border-1">
+                Комментариев: {{ comments_couut }}</p>
         </article>
     {% endfor %}
     <div class="blog-pagination" aria-label="Pagination">

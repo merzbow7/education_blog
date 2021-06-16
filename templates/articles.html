@@ -1,14 +1,25 @@
+{% set articles  = {
+    "Новый пост":{"icon":"bi-plus-lg","href":url_for("new_post")},
+    "Личный кабинет": {"icon":"bi-person","href":url_for("private_profile")},
+    "Выход":{"icon":"bi-box-arrow-right","href":url_for_security("logout")},} %}
+
+
 <div class="position-sticky" style="top: 2rem;">
     {% block timeline %}
-        <div class="p-4">
-            <ul class="list-unstyled">
-                <li>
-                    <a class="text-decoration-none link-secondary" href="{{ url_for("new_post") }}">
-                        + Новый пост
-                    </a>
-                </li>
-            </ul>
-        </div>
+
+        {% if current_user.is_authenticated %}
+            <div class="p-4">
+                <ul class="list-group list-unstyled border-0">
+                    {% for key in articles %}
+                        <li class="list-group-flush">
+                            <a class="link-secondary text-decoration-none" href="{{ articles[key]["href"] }}">
+                                <i class={{ articles[key]["icon"] }}> </i>{{ key }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
         <div class="p-4">
             <h4 class="fst-italic">Archives</h4>
             <ol class="list-unstyled mb-0">

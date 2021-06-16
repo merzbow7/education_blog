@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="border border-3 p-2 mb-4">
+            {% if avatar %}
+                <img class="img-64 float-start me-2" src="data:;base64,{{ avatar }}"/>
+            {% else %}
+                {#                {{ url_for("user_avatar", username=user.username) }}#}
+                <img class="float-start me-2" src="{{ user.avatar(64) }}">
+            {% endif %}
+            <p class="mb-2"><b>{{ user.username }}</b></p>
+            <p class="mb-0">last seen: {{ user.last_login_at }}</p>
+        </div>
+
+        <div class="col-md-6">
+            <b>Последние посты: </b>
+            {% if user.posts.count %}
+                <ul class="list-group"></ul>
+                {% for post in user.posts.all() %}
+                    <li class="list-group-item border-0">
+                        <a class="link-secondary text-decoration-none"
+                           href="{{ url_for("post", post_hash=post.hash_name) }}">
+                            {{ post.title }}
+                        </a>
+                    </li>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            <b>Последние комментарии: </b>
+            {% if user.comments.count %}
+                <ul class="list-unstyled"></ul>
+                {% for comment in user.comments.all() %}
+                    <li class="list-group-item border-0">
+                        <a class="text-decoration-none link-secondary"
+                           href="{{ url_for("post", post_hash=comment.post.hash_name) }}">{{ comment.body }}
+                        </a>
+                    </li>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
