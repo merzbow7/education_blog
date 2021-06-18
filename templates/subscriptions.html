@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md">
+            <h5 class="text-center fst-italic">Подписки:</h5>
+            <ul class="list-group">
+                {% for user in current_user.followed.all() %}
+                    <li class="list-group-item">{{ user.username }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md">
+            <h5 class="text-center fst-italic">Подписчики:</h5>
+            {% for user in current_user.followers.all() %}
+                <li class="list-group-item">{{ user.username }}</li>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% from "macros.html" import render_field_with_errors, render_field %}
+{% from "_macros.html" import render_field_with_errors, render_field %}
 
 {% block content %}
     <article class="blog-post">
@@ -11,17 +11,20 @@
                 {% set time =  comment.created_at.strftime("%Y-%b-%d   %H:%M") %}
                 <li class="list-group-item border-0">
                     <p>
-                        <img class="inline-img" src="{{ comment.user.avatar() }}" alt="{{ comment.user.username }}">
+                        <img class="inline-img" src="{{ comment.user.avatar(user=comment.user) }}"
+                             alt="{{ comment.user.username }}">
                         <b class="me-3">{{ comment.user.username }}</b>{{ time }}
                     </p>
                     <p class="border-bottom border-3 mb-2">{{ comment.body }}</p>
                 </li>
             {% endfor %}
         </ul>
-        <form class="form-row" action="" method="POST">
-            {{ add_comment_form.hidden_tag() }}
-            {{ render_field_with_errors(add_comment_form.comment, class="form-control") }}
-            {{ render_field(add_comment_form.button ,class="btn btn-lg btn-primary") }}
-        </form>
+        {% if current_user.is_authenticated %}
+            <form class="form-row" action="" method="POST">
+                {{ add_comment_form.hidden_tag() }}
+                {{ render_field_with_errors(add_comment_form.comment, class="form-control") }}
+                {{ render_field(add_comment_form.button ,class="btn btn-lg btn-primary") }}
+            </form>
+        {% endif %}
     </article>
 {% endblock %}

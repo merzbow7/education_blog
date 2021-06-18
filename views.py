@@ -1,7 +1,7 @@
 import base64
 from datetime import datetime
 
-from flask import render_template, redirect, url_for, abort, request
+from flask import render_template, redirect, url_for, abort, request, flash, jsonify
 from flask_security import current_user, auth_required
 
 from app import app, db
@@ -30,45 +30,51 @@ def blog():
     return render_template("index.html", posts=posts)
 
 
+@app.route("/feed")
+@auth_required('token', 'session')
+def feed():
+    posts = current_user.followed_posts()
+    return render_template("index.html", posts=posts)
+
+
 @app.route("/profile", methods=["POST", "GET"])
 @auth_required('token', 'session')
 def private_profile():
-    profile_form = ProfileForm()
+    profile_form = ProfileForm(obj=current_user)
     if profile_form.validate_on_submit():
         user = User.query.filter_by(username=current_user.username).first()
-        file = request.files['file'].read()
-        user.user_avatar = file
-        user.username = profile_form.username.data
+        filename = profile_form.file.data
+        username = profile_form.username.data
+        about = profile_form.about.data
+        if filename:
+            file = request.files['file'].read()
+            user.user_avatar = file
+        if username:
+            user.username = username
+        if about:
+            user.about = about
         try:
             db.session.commit()
+            flash('Изменения сохранены.', "success")
         except Exception as err:
+            db.session.rollback()
+            flash('Огибка', "danger")
             print(f"SQL error: {err}")
-    return render_template("profile.html", form=profile_form)
+    return render_template("edit_profile.html", form=profile_form)
 
 
-@app.route("/user/<username>")
-def user(username):
+@app.route("/profile/<username>")
+@auth_required('token', 'session')
+def profile(username):
     user_obj = User.query.filter_by(username=username).first()
     if user_obj:
         if user_obj.user_avatar:
             avatar = base64.b64encode(user_obj.user_avatar).decode('ascii')
         else:
             avatar = False
-        return render_template("user.html", user=user_obj, avatar=avatar)
+        return render_template("public_profile.html", user=user_obj, avatar=avatar)
     else:
         abort(404)
-
-
-@app.route("/user/<username>/avatar")
-def user_avatar(username):
-    user_obj = User.query.filter_by(username=username).first()
-    if user_obj.user_avatar:
-        avatar = base64.b64encode(user_obj.user_avatar).decode('ascii')
-    else:
-        avatar = False
-    result = "data:;base64," + avatar
-    html = f'<img class="float-start me-2" src="data:;base64,{avatar}"/>'
-    return html
 
 
 @app.route("/post/<post_hash>", methods=["POST", "GET"])
@@ -98,10 +104,29 @@ def new_post():
     return render_template("new_post.html", add_post_form=post_form)
 
 
-@app.route("/feed")
+@app.route("/subscriptions")
 @auth_required('token', 'session')
-def feed():
-    return render_template("index.html")
+def subscriptions():
+    ""
+    return render_template("subscriptions.html")
+
+
+@app.route("/subscribe")
+@auth_required('token', 'session')
+def subscribe():
+    subscriber = User.query.get(current_user.id)
+    recipient = User.query.filter_by(username=request.args["recipient"]).first()
+    action = request.args["action"]
+    print(action)
+    try:
+        if action == "append":
+            subscriber.follow(recipient)
+        elif action == "remove":
+            subscriber.unfollow(recipient)
+        db.session.commit()
+        return jsonify({"good": "ok"})
+    except Exception as err:
+        return jsonify({"error": "Ошибка"})
 
 
 @app.route("/links")
@@ -116,11 +141,13 @@ def links():
 
 @app.errorhandler(404)
 def not_found_error(error):
+    app.logger.warning(f"cant resolve url: {request.url}")
     return render_template('error.html', error=404), 404
 
 
 @app.errorhandler(500)
 def internal_error(error):
+    app.logger.error(f"cant resolve url: {request.url}")
     return render_template('error.html', error=500), 500
 
 

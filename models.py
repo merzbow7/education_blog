@@ -3,8 +3,11 @@ from hashlib import md5
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Boolean, DateTime, Column, Integer, String, ForeignKey, Text, LargeBinary
 from datetime import datetime
-from random import choice
-from string import ascii_lowercase
+
+followers = db.Table('followers',
+                     db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
+                     db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
+                     )
 
 
 class Role(db.Model, fsqla.FsRoleMixin):
@@ -19,6 +22,7 @@ class User(db.Model, fsqla.FsUserMixin):
     email = Column(String(255), unique=True)
     username = Column(String(255), unique=True)
     password = Column(String(255), nullable=False)
+    about = Column(String(255))
     active = Column(Boolean())
     last_login_at = Column(DateTime())
     user_avatar = Column(LargeBinary())
@@ -28,9 +32,34 @@ class User(db.Model, fsqla.FsUserMixin):
     comments = db.relationship('Comment', backref='user', cascade="all, delete-orphan", lazy='dynamic')
     roles = relationship('Role', secondary='roles_users',
                          backref=backref('users', lazy='dynamic'))
+    followed = db.relationship(
+        'User', secondary=followers,
+        primaryjoin=(followers.c.follower_id == id),
+        secondaryjoin=(followers.c.followed_id == id),
+        backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
 
-    def avatar(self, size=32):
-        digest = md5(''.join([choice(ascii_lowercase) for _ in range(12)]).encode('utf-8')).hexdigest()
+    def follow(self, user):
+        if not self.is_following(user):
+            self.followed.append(user)
+
+    def unfollow(self, user):
+        if self.is_following(user):
+            self.followed.remove(user)
+
+    def is_following(self, user):
+        return self.followed.filter(
+            followers.c.followed_id == user.id).count() > 0
+
+    def followed_posts(self):
+        return Post.query.join(
+            followers, (followers.c.followed_id == Post.user_id)).filter(
+            followers.c.follower_id == self.id).order_by(
+            Post.created_at.desc())
+
+    def avatar(self, size=32, user=None):
+        if not user:
+            user = User
+        digest = md5(str(user.email + user.username).encode('utf-8')).hexdigest()
         return f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={size}'
 
 
@@ -41,7 +70,7 @@ class Post(db.Model):
     title = Column(String(50))
     body = Column(Text())
     user_id = Column(Integer(), ForeignKey('user.id'))
-    created_at = Column(DateTime(), default=datetime.now)
+    created_at = Column(DateTime(), default=datetime.utcnow)
     comments = db.relationship('Comment', cascade="all, delete-orphan", backref='post', lazy='dynamic')
 
 

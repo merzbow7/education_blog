@@ -1,12 +1,12 @@
 {% set articles  = {
     "Новый пост":{"icon":"bi-plus-lg","href":url_for("new_post")},
-    "Личный кабинет": {"icon":"bi-person","href":url_for("private_profile")},
+    "Профиль": {"icon":"bi-person","href":url_for("profile", username=current_user.username)},
+    "Подписки": {"icon":"bi-people-fill","href":url_for("subscriptions")},
     "Выход":{"icon":"bi-box-arrow-right","href":url_for_security("logout")},} %}
 
 
 <div class="position-sticky" style="top: 2rem;">
-    {% block timeline %}
-
+    {% block personalmenu %}
         {% if current_user.is_authenticated %}
             <div class="p-4">
                 <ul class="list-group list-unstyled border-0">
@@ -20,6 +20,8 @@
                 </ul>
             </div>
         {% endif %}
+    {% endblock %}
+    {% block timeline %}
         <div class="p-4">
             <h4 class="fst-italic">Archives</h4>
             <ol class="list-unstyled mb-0">

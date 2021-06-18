@@ -1,16 +1,32 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <script src="{{ url_for("static", filename="js/blog.js") }}"></script>
     <div class="row">
         <div class="border border-3 p-2 mb-4">
             {% if avatar %}
-                <img class="img-64 float-start me-2" src="data:;base64,{{ avatar }}"/>
+                <img class="img-96 float-start me-2" src="data:;base64,{{ avatar }}"/>
             {% else %}
-                {#                {{ url_for("user_avatar", username=user.username) }}#}
-                <img class="float-start me-2" src="{{ user.avatar(64) }}">
+                <img class="float-start me-2" src="{{ user.avatar(96, user=user) }}">
             {% endif %}
-            <p class="mb-2"><b>{{ user.username }}</b></p>
-            <p class="mb-0">last seen: {{ user.last_login_at }}</p>
+            <p class="mb-2"><b>{{ user.username }}</b>
+                <span class="ms-4"><i>last seen:</i> {{ user.last_login_at }}</span>
+                {% if current_user.is_following(user) %}
+                    {% set friendship = "bi-person-dash" %}
+                    {% set color = "danger" %}
+                {% else %}
+                    {% set friendship = "bi-person-plus" %}
+                    {% set color = "success" %}
+                {% endif %}
+                {% set full_url = url_for("subscribe", _external=True) %}
+                <button id="friendship" type="button"
+                        onclick="makeFriendship.call(this,'{{ full_url }}', '{{ user.username }}');"
+                        class="btn btn-{{ color }} bi {{ friendship }} float-end" value="friends">
+                </button>
+            </p>
+            <p class="mb-0">{{ user.about }} </p>
+
+
         </div>
 
         <div class="col-md-6">

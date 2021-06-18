@@ -11,7 +11,7 @@
             <p class="blog-post-meta">{{ time }}
                 {% set user_profile = post.user.username %}
                 <a class="px-3"
-                   href="{{ url_for('user', username= post.user.username ) }}">{{ post.user.username }}</a>
+                   href="{{ url_for('profile', username= post.user.username ) }}">{{ post.user.username }}</a>
             </p>
             <p>{{ post.body }}</p>
             {% set comments_couut = post.comments.all()|length %}

@@ -1,9 +1,9 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField
 from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms.validators import DataRequired, StopValidation
+from wtforms.validators import DataRequired, StopValidation, ValidationError
 
-from flask_security import RegisterForm
+from flask_security import RegisterForm, current_user
 from models import User
 
 
@@ -20,7 +20,30 @@ class UniqueUserNameRequired(object):
             self.message = "Username is already exist."
 
     def __call__(self, form, field):
-        if User.query.filter_by(username=field.data).count():
+        if field.data:
+            if User.query.filter_by(username=field.data).count():
+                raise StopValidation(self.message)
+
+
+class FormDataRequired(object):
+    """
+    Validate form for some data
+    """
+    field_flags = ('required',)
+
+    def __init__(self, message=None):
+        if message:
+            self.message = message
+        else:
+            self.message = "Form is empty!"
+
+    def __call__(self, form, field):
+        is_data = False
+        skipped = ["button", "csrf_token"]
+        for field_form in form:
+            if field_form.id not in skipped and field_form.data:
+                is_data = True
+        if not is_data:
             raise StopValidation(self.message)
 
 
@@ -29,9 +52,10 @@ class ExtendedRegisterForm(RegisterForm):
 
 
 class ProfileForm(FlaskForm):
-    username = StringField('Имя пользователя:', [DataRequired(), UniqueUserNameRequired()])
-    file = FileField('Загрузите фото:', [FileRequired(), FileAllowed(['jpg', 'png', 'png'], 'Images only!')])
-    button = SubmitField("Применить")
+    username = StringField('Имя пользователя:')
+    about = TextAreaField("О себе:")
+    file = FileField('Загрузите фото:', [FileAllowed(['jpg', 'png', 'png'], 'Images only!')])
+    button = SubmitField("Применить", [FormDataRequired()])
 
 
 class AddNewPostForm(FlaskForm):

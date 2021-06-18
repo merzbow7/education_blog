@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% from "security/_macros.html" import render_field_with_errors, render_field, render_field_with_errors_without_label %}
+{% block content %}
+    <div class="container">
+        личный кабинет <a href="{{ url_for("profile", username=current_user.username ) }}">{{ current_user.username }}</a>
+        <form class="form-row m-3 w-50" action="{{ url_for('private_profile') }}" method="post"
+              enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            {{ render_field_with_errors(form.username, class="form-control") }}
+            {{ render_field_with_errors(form.about, class="form-control") }}
+            {{ render_field_with_errors(form.file, class="form-control") }}
+            {{ render_field_with_errors_without_label(form.button, class="btn btn-primary") }}
+            {% include "security/_messages.html" %}
+        </form>
+    </div>
+{% endblock %}
