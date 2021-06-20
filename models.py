@@ -79,4 +79,4 @@ class Comment(db.Model):
     post_id = Column(Integer(), ForeignKey('post.id'))
     user_id = Column(Integer(), ForeignKey('user.id'))
     body = Column(String(255))
-    created_at = Column(DateTime(), default=datetime.now)
+    created_at = Column(DateTime(), default=datetime.utcnow)

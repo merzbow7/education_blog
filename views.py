@@ -4,10 +4,16 @@ from datetime import datetime
 from flask import render_template, redirect, url_for, abort, request, flash, jsonify
 from flask_security import current_user, auth_required
 
-from app import app, db
+from app import app, db, babel
 from forms import AddNewPostForm, AddCommentForm, ProfileForm
 from models import Post, Comment, User
 from utils import add_to_db, get_post_hash
+from flask_babel import _
+
+
+@babel.localeselector
+def get_locale():
+    return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
 @app.before_request
@@ -61,11 +67,11 @@ def private_profile():
             user.about = about
         try:
             db.session.commit()
-            flash('Изменения сохранены.', "success")
+            flash(_('Изменения сохранены.'), "success")
             return redirect(url_for("private_profile"))
         except Exception as err:
             db.session.rollback()
-            flash('Огибка', "danger")
+            flash('Ошибка', "danger")
             app.logger.error(f"sql error: {err}")
     return render_template("edit_profile.html", form=profile_form)
 
@@ -82,7 +88,7 @@ def profile(username):
         tab = request.args.get("tab", "Posts")
 
         c_page = request.args.get('page', 1, type=int)
-        page = eval(tab[:-1]).query.filter_by(user_id=user_obj.id).paginate(c_page, 3, False)
+        page = eval(tab[:-1]).query.filter_by(user_id=user_obj.id).paginate(c_page, 8, False)
         params = {"username": username, "tab": tab}
         return render_template("public_profile.html", user=user_obj, avatar=avatar, tab=tab,
                                page=page, params=params)

@@ -21,7 +21,7 @@
                 </div>
             </picture>
             <p class="mb-2"><b>{{ user.username }}</b>
-                <span class="ms-4"><i>last seen:</i> {{ user.last_login_at }}</span>
+                <span class="ms-4"><i>last seen: </i>{{ moment(user.last_login_at).fromNow() }}</span>
                 {% if current_user.is_following(user) %}
                     {% set friendship = "bi-person-dash" %}
                     {% set color = "danger" %}

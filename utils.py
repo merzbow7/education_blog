@@ -1,13 +1,19 @@
-from app import db
 from string import ascii_lowercase
 from random import choice
+
+from flask_mail import Message
+
+from app import db, mail
 from models import Post
-import base64
 
 
-def render_picture(data):
-    render_pic = base64.b64encode(data).decode('ascii')
-    return render_pic
+def send_email(subject, sender, recipients, text_body, html_body):
+    if not isinstance(recipients, list):
+        recipients = [recipients]
+    msg = Message(subject, sender=sender, recipients=recipients)
+    msg.body = text_body
+    msg.html = html_body
+    mail.send(msg)
 
 
 def make_random_hash(hash_len):
