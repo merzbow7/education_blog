@@ -1,0 +1,7 @@
+{% macro button_subscribe(user, color, friendship) %}
+    {% set full_url = url_for("subscribe", _external=True) %}
+    <button id="friendship" type="button"
+            onclick="makeFriendship.call(this,'{{ full_url }}', '{{ user.username }}');"
+            class="btn btn-{{ color }} bi {{ friendship }} float-end" value="friends">
+    </button>
+{% endmacro %}

@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField
 from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms.validators import DataRequired, StopValidation, ValidationError
+from wtforms.validators import DataRequired, StopValidation, ValidationError, Length
 
 from flask_security import RegisterForm, current_user
 from models import User
@@ -52,14 +52,14 @@ class ExtendedRegisterForm(RegisterForm):
 
 
 class ProfileForm(FlaskForm):
-    username = StringField('Имя пользователя:')
-    about = TextAreaField("О себе:")
+    username = StringField('Имя пользователя:', [Length(1, 25)])
+    about = TextAreaField("О себе:", [Length(1, 255)])
     file = FileField('Загрузите фото:', [FileAllowed(['jpg', 'png', 'png'], 'Images only!')])
     button = SubmitField("Применить", [FormDataRequired()])
 
 
 class AddNewPostForm(FlaskForm):
-    title = StringField("Заголовок:", validators=[DataRequired()])
+    title = StringField("Заголовок:", validators=[DataRequired(), Length(1, 50)])
     post = TextAreaField("Новая запись:", validators=[DataRequired()])
     button = SubmitField("Добавить")
 

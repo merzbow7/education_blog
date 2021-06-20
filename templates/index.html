@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% for post in posts %}
+    {% for post in page.items %}
         {% set post_href = url_for("post", post_hash=post.hash_name) %}
-        <article class="blog-post" onclick="window.location.href = '{{ post_href }}'">
+        <article class="blog-post shadow p-3 mb-5 bg-body rounded"
+                 onclick="window.location.href = '{{ post_href }}'">
             <a class="text-decoration-none link-dark" href="{{ post_href }}">
                 <h2 class="blog-post-title">{{ post.title }}</h2>
             </a>
@@ -15,12 +16,9 @@
             </p>
             <p>{{ post.body }}</p>
             {% set comments_couut = post.comments.all()|length %}
-            <p class="blog-post-meta border-secondary border-top border-1">
+            <p class="blog-post-meta border-2 border-top">
                 Комментариев: {{ comments_couut }}</p>
         </article>
     {% endfor %}
-    <div class="blog-pagination" aria-label="Pagination">
-        <a class="btn btn-outline-primary" href="#">Older</a>
-        <a class="btn btn-outline-secondary disabled" href="#" tabindex="-1" aria-disabled="true">Newer</a>
-    </div>
+    {% include "_pagenation.html" %}
 {% endblock %}

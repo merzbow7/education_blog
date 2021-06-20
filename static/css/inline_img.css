@@ -9,3 +9,7 @@
 .img-96 {
     height: 96px;
 }
+
+.shadow-primary {
+    box-shadow: 0px 0px 10px 3px rgba(2, 117, 260, .1)
+}

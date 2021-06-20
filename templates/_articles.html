@@ -5,7 +5,7 @@
     "Выход":{"icon":"bi-box-arrow-right","href":url_for_security("logout")},} %}
 
 
-<div class="position-sticky" style="top: 2rem;">
+<div class="position-sticky shadow p-3 mb-5 bg-body rounded" style="top: 2rem;">
     {% block personalmenu %}
         {% if current_user.is_authenticated %}
             <div class="p-4">

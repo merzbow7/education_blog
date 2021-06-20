@@ -15,4 +15,3 @@ function makeFriendship(_url, user) {
     this.classList.toggle("bi-person-dash");
     this.classList.toggle("bi-person-plus");
 }
-

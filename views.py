@@ -20,21 +20,27 @@ def before_request():
 @app.route("/")
 def index():
     posts = Post.query.order_by(Post.created_at.desc())
-    return render_template("index.html", posts=posts)
+    c_page = request.args.get('page', 1, type=int)
+    page = posts.paginate(c_page, app.config["POSTS_PER_PAGE"], False)
+    return render_template("index.html", page=page)
 
 
 @app.route("/blog")
 @auth_required('token', 'session')
 def blog():
     posts = Post.query.filter_by(user_id=current_user.id).order_by(Post.created_at.desc())
-    return render_template("index.html", posts=posts)
+    c_page = request.args.get('page', 1, type=int)
+    page = posts.paginate(c_page, app.config["POSTS_PER_PAGE"], False)
+    return render_template("index.html", page=page)
 
 
 @app.route("/feed")
 @auth_required('token', 'session')
 def feed():
     posts = current_user.followed_posts()
-    return render_template("index.html", posts=posts)
+    c_page = request.args.get('page', 1, type=int)
+    page = posts.paginate(c_page, app.config["POSTS_PER_PAGE"], False)
+    return render_template("index.html", page=page)
 
 
 @app.route("/profile", methods=["POST", "GET"])
@@ -56,10 +62,11 @@ def private_profile():
         try:
             db.session.commit()
             flash('Изменения сохранены.', "success")
+            return redirect(url_for("private_profile"))
         except Exception as err:
             db.session.rollback()
             flash('Огибка', "danger")
-            print(f"SQL error: {err}")
+            app.logger.error(f"sql error: {err}")
     return render_template("edit_profile.html", form=profile_form)
 
 
@@ -72,7 +79,13 @@ def profile(username):
             avatar = base64.b64encode(user_obj.user_avatar).decode('ascii')
         else:
             avatar = False
-        return render_template("public_profile.html", user=user_obj, avatar=avatar)
+        tab = request.args.get("tab", "Posts")
+
+        c_page = request.args.get('page', 1, type=int)
+        page = eval(tab[:-1]).query.filter_by(user_id=user_obj.id).paginate(c_page, 3, False)
+        params = {"username": username, "tab": tab}
+        return render_template("public_profile.html", user=user_obj, avatar=avatar, tab=tab,
+                               page=page, params=params)
     else:
         abort(404)
 
@@ -86,8 +99,12 @@ def post(post_hash):
             comment = Comment(body=comment_form.comment.data, post_id=getting_post.first().id,
                               user_id=current_user.id)
             add_to_db(comment)
-        comment_form.comment.data = ""
-        return render_template("post.html", post=getting_post.first(), add_comment_form=comment_form)
+            return redirect(url_for("post", post_hash=post_hash))
+        c_page = request.args.get('page', 1, type=int)
+        page = getting_post.first().comments.paginate(c_page, app.config["COMMENTS_PER_PAGE"], False)
+        params = {"post_hash": post_hash}
+        return render_template("post.html", post=getting_post.first(),
+                               add_comment_form=comment_form, page=page, params=params)
     else:
         return abort(404)
 
@@ -107,7 +124,6 @@ def new_post():
 @app.route("/subscriptions")
 @auth_required('token', 'session')
 def subscriptions():
-    ""
     return render_template("subscriptions.html")
 
 
@@ -117,7 +133,6 @@ def subscribe():
     subscriber = User.query.get(current_user.id)
     recipient = User.query.filter_by(username=request.args["recipient"]).first()
     action = request.args["action"]
-    print(action)
     try:
         if action == "append":
             subscriber.follow(recipient)
@@ -126,6 +141,7 @@ def subscribe():
         db.session.commit()
         return jsonify({"good": "ok"})
     except Exception as err:
+        app.logger.error(f"sql error: {err}")
         return jsonify({"error": "Ошибка"})
 
 
@@ -147,7 +163,7 @@ def not_found_error(error):
 
 @app.errorhandler(500)
 def internal_error(error):
-    app.logger.error(f"cant resolve url: {request.url}")
+    app.logger.error(f"internal error: {error}")
     return render_template('error.html', error=500), 500
 
 

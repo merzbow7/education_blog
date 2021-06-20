@@ -1,19 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
+    {% from "_button.html" import button_subscribe %}
     <div class="row">
         <div class="col-md">
             <h5 class="text-center fst-italic">Подписки:</h5>
             <ul class="list-group">
                 {% for user in current_user.followed.all() %}
-                    <li class="list-group-item">{{ user.username }}</li>
+                    <a class="text-decoration-none" href="{{ url_for("profile", username=user.username) }}">
+                        <li class="list-group-item">{{ user.username }}</li>
+                    </a>
                 {% endfor %}
             </ul>
         </div>
         <div class="col-md">
             <h5 class="text-center fst-italic">Подписчики:</h5>
             {% for user in current_user.followers.all() %}
-                <li class="list-group-item">{{ user.username }}</li>
+                <a class="text-decoration-none" href="{{ url_for("profile", username=user.username) }}">
+                    <li class="list-group-item">{{ user.username }}</li>
+                </a>
             {% endfor %}
         </div>
     </div>

@@ -6,8 +6,9 @@
     <article class="blog-post">
         <h2 class="blog-post-title">{{ post.title }}</h2>
         <p>{{ post.body }}</p>
+
         <ul class="list-group">
-            {% for comment in post.comments %}
+            {% for comment in page.items %}
                 {% set time =  comment.created_at.strftime("%Y-%b-%d   %H:%M") %}
                 <li class="list-group-item border-0">
                     <p>
@@ -19,6 +20,7 @@
                 </li>
             {% endfor %}
         </ul>
+        {% include "_pagenation.html" %}
         {% if current_user.is_authenticated %}
             <form class="form-row" action="" method="POST">
                 {{ add_comment_form.hidden_tag() }}

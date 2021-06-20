@@ -20,7 +20,7 @@ class Role(db.Model, fsqla.FsRoleMixin):
 class User(db.Model, fsqla.FsUserMixin):
     id = Column(Integer, primary_key=True)
     email = Column(String(255), unique=True)
-    username = Column(String(255), unique=True)
+    username = Column(String(25), unique=True)
     password = Column(String(255), nullable=False)
     about = Column(String(255))
     active = Column(Boolean())
@@ -32,11 +32,10 @@ class User(db.Model, fsqla.FsUserMixin):
     comments = db.relationship('Comment', backref='user', cascade="all, delete-orphan", lazy='dynamic')
     roles = relationship('Role', secondary='roles_users',
                          backref=backref('users', lazy='dynamic'))
-    followed = db.relationship(
-        'User', secondary=followers,
-        primaryjoin=(followers.c.follower_id == id),
-        secondaryjoin=(followers.c.followed_id == id),
-        backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
+    followed = db.relationship('User', secondary=followers,
+                               primaryjoin=(followers.c.follower_id == id),
+                               secondaryjoin=(followers.c.followed_id == id),
+                               backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
 
     def follow(self, user):
         if not self.is_following(user):
