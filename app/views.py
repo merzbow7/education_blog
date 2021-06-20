@@ -3,12 +3,12 @@ from datetime import datetime
 
 from flask import render_template, redirect, url_for, abort, request, flash, jsonify
 from flask_security import current_user, auth_required
+from flask_babel import _
 
 from app import app, db, babel
-from forms import AddNewPostForm, AddCommentForm, ProfileForm
-from models import Post, Comment, User
-from utils import add_to_db, get_post_hash
-from flask_babel import _
+from app.forms import AddNewPostForm, AddCommentForm, ProfileForm
+from app.models import Post, Comment, User
+from app.utils import add_to_db, get_post_hash
 
 
 @babel.localeselector

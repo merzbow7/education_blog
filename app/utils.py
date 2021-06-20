@@ -4,7 +4,7 @@ from random import choice
 from flask_mail import Message
 
 from app import db, mail
-from models import Post
+from app.models import Post
 
 
 def send_email(subject, sender, recipients, text_body, html_body):

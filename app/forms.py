@@ -1,13 +1,12 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from flask_babel import _
 from flask_babel import lazy_gettext as _l
 from flask_security import RegisterForm
 
 from wtforms import StringField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, StopValidation, Length
 
-from models import User
+from app.models import User
 
 
 class UniqueUserNameRequired(object):

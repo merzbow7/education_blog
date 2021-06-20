@@ -25,7 +25,7 @@ if app.config['PROJECT_LOGGING_FILE']:
     path_dir_log = Path(app.root_path) / "logs"
     if not path_dir_log.exists():
         path_dir_log.mkdir()
-    file_handler = RotatingFileHandler('logs/blog.log', maxBytes=10240,
+    file_handler = RotatingFileHandler('../logs/blog.log', maxBytes=10240,
                                        backupCount=10)
     file_handler.setFormatter(logging.Formatter(
         '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))

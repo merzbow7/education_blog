@@ -4,7 +4,7 @@ from flask_admin.contrib.sqla import ModelView
 from flask_security import current_user
 
 from app import app, db
-from models import User, Role, Post, Comment
+from app.models import User, Role, Post, Comment
 
 
 class AccessModelView:
