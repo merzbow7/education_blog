@@ -4,7 +4,7 @@
 {% block content %}
     <form class="form-signin shadow p-3 mb-5 bg-body rounded"
           action="{{ url_for_security('login') }}" method="POST" name="login_user_form">
-        <h1 class="text-center">{{ _fsdomain('Вход') }}</h1>
+        <h1 class="text-center">{{ _fsdomain('Enter') }}</h1>
         {{ login_user_form.hidden_tag() }}
         {{ render_field_with_errors(login_user_form.email, class="form-control") }}
         {{ render_field_with_errors(login_user_form.password, class="form-control") }}

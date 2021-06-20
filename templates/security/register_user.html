@@ -4,7 +4,7 @@
 {% block content %}
     <form class="form-signin shadow p-3 mb-5 bg-body rounded"
           action="{{ url_for_security('register') }}" method="POST" name="register_user_form">
-        <h1 class="text-center">{{ _fsdomain('Регистрация') }}</h1>
+        <h1 class="text-center">{{ _fsdomain('Register') }}</h1>
         {{ register_user_form.hidden_tag() }}
         {{ render_field_with_errors(register_user_form.username, class="form-control") }}
         {{ render_field_with_errors(register_user_form.email, class="form-control") }}

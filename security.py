@@ -7,5 +7,4 @@ from forms import ExtendedRegisterForm
 
 
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
-
 security = Security(app, user_datastore, register_form=ExtendedRegisterForm)

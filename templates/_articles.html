@@ -1,8 +1,8 @@
 {% set articles  = {
-    "Новый пост":{"icon":"bi-plus-lg","href":url_for("new_post")},
-    "Профиль": {"icon":"bi-person","href":url_for("profile", username=current_user.username)},
-    "Подписки": {"icon":"bi-people-fill","href":url_for("subscriptions")},
-    "Выход":{"icon":"bi-box-arrow-right","href":url_for_security("logout")},} %}
+    _("New post"):{"icon":"bi-plus-lg","href":url_for("new_post")},
+    _("Profile"): {"icon":"bi-person","href":url_for("profile", username=current_user.username)},
+    _("Subscriptions"): {"icon":"bi-people-fill","href":url_for("subscriptions")},
+    _("Exit"):{"icon":"bi-box-arrow-right","href":url_for_security("logout")},} %}
 
 
 <div class="position-sticky shadow p-3 mb-5 bg-body rounded" style="top: 2rem;">

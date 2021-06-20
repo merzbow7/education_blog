@@ -67,11 +67,11 @@ def private_profile():
             user.about = about
         try:
             db.session.commit()
-            flash(_('Изменения сохранены.'), "success")
+            flash(_('Changes saved.'), "success")
             return redirect(url_for("private_profile"))
         except Exception as err:
             db.session.rollback()
-            flash('Ошибка', "danger")
+            flash(_('Error'), "danger")
             app.logger.error(f"sql error: {err}")
     return render_template("edit_profile.html", form=profile_form)
 
@@ -148,7 +148,7 @@ def subscribe():
         return jsonify({"good": "ok"})
     except Exception as err:
         app.logger.error(f"sql error: {err}")
-        return jsonify({"error": "Ошибка"})
+        return jsonify({"error": "Error"})
 
 
 @app.route("/links")

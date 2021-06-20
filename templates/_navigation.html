@@ -1,20 +1,20 @@
 {% set nav = {
   "blog": {
-    "name": "Мой блог",
+    "name": _("My blog"),
     "active": "active",
   },
   "feed": {
-    "name": "Лента",
+    "name": _("Feed"),
     "active": "",
   },
   "links": {
-    "name": "Ссылки",
+    "name": _("Links"),
     "active": "",
   }
 } %}
 <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{{ url_for('index') }}">Блоги</a>
+        <a class="navbar-brand" href="{{ url_for('index') }}">{{ _("Blogs") }}</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -41,16 +41,16 @@
                 {% endfor %}
             </ul>
             {% if current_user and not current_user.is_anonymous %}
-                {% set name_user = current_user.email.split("@")[0] %}
+                {% set name_user = current_user.username %}
                 {% set href = url_for('private_profile') %}
             {% else %}
-                {% set name_user = 'Войти' %}
+                {% set name_user =  _('Enter') %}
                 {% set href = url_for_security('login') %}
             {% endif %}
             <a class="btn btn-sm btn-outline-secondary mx-5" href="{{ href }}">{{ name_user }}</a>
             <form class="d-flex">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
+                <button class="btn btn-outline-success" type="submit">{{ _("Search") }}</button>
             </form>
         </div>
     </div>
