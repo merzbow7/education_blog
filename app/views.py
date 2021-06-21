@@ -1,9 +1,10 @@
 import base64
 from datetime import datetime
+from pathlib import Path
 
-from flask import render_template, redirect, url_for, abort, request, flash, jsonify
+from flask import render_template, redirect, url_for, abort, request, flash, jsonify, g, session
 from flask_security import current_user, auth_required
-from flask_babel import _
+from flask_babel import _, get_locale, gettext, get_translations
 
 from app import app, db, babel
 from app.forms import AddNewPostForm, AddCommentForm, ProfileForm
@@ -11,13 +12,15 @@ from app.models import Post, Comment, User
 from app.utils import add_to_db, get_post_hash
 
 
-@babel.localeselector
-def get_locale():
-    return request.accept_languages.best_match(app.config['LANGUAGES'])
+@app.route('/language/<language>')
+def set_language(language=None):
+    session["lang"] = language
+    return redirect(request.args["next"])
 
 
 @app.before_request
 def before_request():
+    session["lang"] = str(get_locale())
     if current_user.is_authenticated:
         current_user.last_login_at = datetime.utcnow()
         db.session.commit()
@@ -67,11 +70,11 @@ def private_profile():
             user.about = about
         try:
             db.session.commit()
-            flash(_('Changes saved.'), "success")
+            flash(gettext('Changes saved.'), "success")
             return redirect(url_for("private_profile"))
         except Exception as err:
             db.session.rollback()
-            flash(_('Error'), "danger")
+            flash(gettext('Error'), "danger")
             app.logger.error(f"sql error: {err}")
     return render_template("edit_profile.html", form=profile_form)
 
@@ -171,10 +174,3 @@ def not_found_error(error):
 def internal_error(error):
     app.logger.error(f"internal error: {error}")
     return render_template('error.html', error=500), 500
-
-
-# Context
-
-@app.shell_context_processor
-def make_shell_context():
-    return {'db': db, 'User': User, 'Post': Post, "Comment": Comment}

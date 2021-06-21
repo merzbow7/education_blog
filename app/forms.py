@@ -19,7 +19,7 @@ class UniqueUserNameRequired(object):
         if message:
             self.message = message
         else:
-            self.message = _l("Username already exists!")
+            self.message = _l('Username already exists!')
 
     def __call__(self, form, field):
         if field.data:
@@ -37,11 +37,11 @@ class FormDataRequired(object):
         if message:
             self.message = message
         else:
-            self.message = _l("Form is empty!")
+            self.message = _l('Form is empty!')
 
     def __call__(self, form, field):
         is_data = False
-        skipped = ["button", "csrf_token"]
+        skipped = ['button', 'csrf_token']
         for field_form in form:
             if field_form.id not in skipped and field_form.data:
                 is_data = True
@@ -55,17 +55,17 @@ class ExtendedRegisterForm(RegisterForm):
 
 class ProfileForm(FlaskForm):
     username = StringField(_l('Username'), [Length(1, 25)])
-    about = TextAreaField(_l("About"), [Length(1, 255)])
+    about = TextAreaField(_l('About'), [Length(1, 255)])
     file = FileField(_l('Add image'), [FileAllowed(['jpg', 'png', 'png'], _l('Images only!'))])
-    button = SubmitField(_l("Apply"), [FormDataRequired()])
+    button = SubmitField(_l('Apply'), [FormDataRequired()])
 
 
 class AddNewPostForm(FlaskForm):
-    title = StringField(_l("Title"), validators=[DataRequired(), Length(1, 50)])
-    post = TextAreaField(_l("New post"), validators=[DataRequired()])
-    button = SubmitField(_l("Submit"))
+    title = StringField(_l('Title'), validators=[DataRequired(), Length(1, 50)])
+    post = TextAreaField(_l('New post'), validators=[DataRequired()])
+    button = SubmitField(_l('Submit'))
 
 
 class AddCommentForm(FlaskForm):
-    comment = TextAreaField(_l("Your comment"), validators=[DataRequired()])
-    button = SubmitField(_l("Submit"))
+    comment = TextAreaField(_l('Your comment'), validators=[DataRequired()])
+    button = SubmitField(_l('Submit'))

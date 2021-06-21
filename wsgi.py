@@ -1,4 +1,11 @@
-from app import app, models, views, admin, security
+from app import app, db, models, views, admin, security, cli
+from app.models import User, Post, Role, Comment
+
+
+@app.shell_context_processor
+def make_shell_context():
+    return {'db': db, 'User': User, 'Post': Post, 'Comment': Comment, 'Role': Role}
+
 
 if __name__ == '__main__':
     app.run()

@@ -1,0 +1,13 @@
+{% extends 'blank_base.html' %}
+{% block content %}
+    <div class="text-center">
+        {% if error == 404 %}
+            <h1></h1>
+            <h2>{{ _("Error") }} {{ error }}</h2>
+            <h3>{{ _('Page Not Found') }}</h3>
+        {% elif error == 500 %}
+            <h2>{{ _("Error") }} {{ error }}</h2>
+            <h3>{{ _("Internal server error") }}</h3>
+        {% endif %}
+    </div>
+{% endblock %}

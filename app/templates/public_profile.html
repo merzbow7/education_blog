@@ -41,13 +41,15 @@
                     <ul class="list-group"></ul>
                     {% for item in page.items %}
                         <li class="list-group-item border-0">
-                            <a class="link-secondary text-decoration-none"
-                               href="{{ url_for("post", post_hash=item.hash_name) }}">
-                                {% if item.title %}
-                                    {{ item.title }}
-                                {% else %}
-                                    {{ item.body }}
-                                {% endif %}
+                            {% if item.title %}
+                                <a class="link-secondary text-decoration-none"
+                                   href="{{ url_for("post", post_hash=item.hash_name) }}">
+                                {{ item.title }}
+                            {% else %}
+                                <a class="link-secondary text-decoration-none"
+                                   href="{{ url_for("post", post_hash=item.post.hash_name) }}">
+                                {{ item.body }}
+                            {% endif %}
                             </a>
                         </li>
                     {% endfor %}

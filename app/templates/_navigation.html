@@ -14,6 +14,7 @@
 } %}
 <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
     <div class="container-fluid">
+        {% set ggg = 123 %}
         <a class="navbar-brand" href="{{ url_for('index') }}">{{ _("Blogs") }}</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,15 +40,35 @@
                         </a>
                     </li>
                 {% endfor %}
+
+                {% if request.endpoint %}
+                    {% set lang = {"ru":"Русский","en":"English"} %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="" id="navbarDarkDropdownMenuLink" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ lang[session.get("lang")] }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                            <li><a class="dropdown-item"
+                                   href="{{ url_for('set_language', language="ru", next=request.url) }}">{{ lang["ru"] }}</a>
+                            </li>
+                            <li><a class="dropdown-item"
+                                   href="{{ url_for('set_language', language="en", next=request.url) }}">{{ lang["en"] }}</a>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
             </ul>
             {% if current_user and not current_user.is_anonymous %}
                 {% set name_user = current_user.username %}
                 {% set href = url_for('private_profile') %}
             {% else %}
-                {% set name_user =  _('Enter') %}
+                {% set name_user =  _('Login') %}
                 {% set href = url_for_security('login') %}
             {% endif %}
-            <a class="btn btn-sm btn-outline-secondary mx-5" href="{{ href }}">{{ name_user }}</a>
+            <a class="m-auto" href="{{ href }}">
+                <button class="btn btn-outline-secondary" type="submit">{{ name_user }}</button>
+            </a>
             <form class="d-flex">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">{{ _("Search") }}</button>

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ session['lang'] }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -32,7 +32,7 @@
     {% endblock %}
     {% block scripts %}
         {{ moment.include_moment() }}
-{#        {{ moment.lang('ru') }}#}
+        {{ moment.lang(session['lang']) }}
     {% endblock %}
 
 
