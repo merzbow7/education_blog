@@ -1,7 +1,7 @@
 {% set articles  = {
-    _("New post"):{"icon":"bi-plus-lg","href":url_for("new_post")},
-    _("Profile"): {"icon":"bi-person","href":url_for("profile", username=current_user.username)},
-    _("Subscriptions"): {"icon":"bi-people-fill","href":url_for("subscriptions")},
+    _("New post"):{"icon":"bi-plus-lg","href":url_for("main.new_post")},
+    _("Profile"): {"icon":"bi-person","href":url_for("main.profile", username=current_user.username)},
+    _("Subscriptions"): {"icon":"bi-people-fill","href":url_for("main.subscriptions")},
     _("Exit"):{"icon":"bi-box-arrow-right","href":url_for_security("logout")},} %}
 
 

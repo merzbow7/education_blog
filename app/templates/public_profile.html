@@ -14,7 +14,7 @@
                 </div>
                 <div class="text-center mt-3">
                     {% if current_user == user %}
-                        <a href="{{ url_for("private_profile") }}">
+                        <a href="{{ url_for("main.private_profile") }}">
                             <button class="btn btn-outline-primary bi bi-pencil-square">Edit</button>
                         </a>
                     {% endif %}
@@ -43,11 +43,11 @@
                         <li class="list-group-item border-0">
                             {% if item.title %}
                                 <a class="link-secondary text-decoration-none"
-                                   href="{{ url_for("post", post_hash=item.hash_name) }}">
+                                   href="{{ url_for("main.post", post_hash=item.hash_name) }}">
                                 {{ item.title }}
                             {% else %}
                                 <a class="link-secondary text-decoration-none"
-                                   href="{{ url_for("post", post_hash=item.post.hash_name) }}">
+                                   href="{{ url_for("main.post", post_hash=item.post.hash_name) }}">
                                 {{ item.body }}
                             {% endif %}
                             </a>

@@ -3,7 +3,7 @@
 {% from "security/_macros.html" import render_field_with_errors, render_field, render_field_with_errors_without_label %}
 {% block content %}
     <div class="container">
-        <form class="form-row m-3 w-50" action="{{ url_for('private_profile') }}" method="post"
+        <form class="form-row m-3 w-50" action="{{ url_for('main.private_profile') }}" method="post"
               enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             {{ render_field_with_errors(form.username, class="form-control") }}

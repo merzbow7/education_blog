@@ -1,16 +1,16 @@
-{% set pills = ["Posts",  "Comments"] %}
+{% set pills = {_("Posts"):"Posts",  _("Comments"):"Comments"} %}
 <div class="btn-group" role="group" aria-label="conten choise">
-    {% for item in pills %}
+    {% for key, item in pills.items() %}
         {% if item == params["tab"] %}
             {% set  class_active = 'btn btn-primary active' %}
         {% else %}
             {% set  class_active = 'btn btn-outline-secondary' %}
         {% endif %}
         {% set temp = params["tab"] %}
-        {% set _ = params.update({"tab":item}) %}
+        {% set _t = params.update({"tab":item}) %}
         <a href="{{ url_for(request.endpoint, page=1, **params) }}">
-            <button type="button" class="{{ class_active }}">{{ item }}</button>
+            <button type="button" class="{{ class_active }}">{{ key }}</button>
         </a>
-        {% set _ = params.update({"tab":temp}) %}
+        {% set _t = params.update({"tab":temp}) %}
     {% endfor %}
 </div>

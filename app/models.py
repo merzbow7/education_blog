@@ -1,4 +1,5 @@
-from app import db, fsqla
+from app import db
+from flask_security.models import fsqla_v2 as fsqla
 from hashlib import md5
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Boolean, DateTime, Column, Integer, String, ForeignKey, Text, LargeBinary
@@ -54,6 +55,11 @@ class User(db.Model, fsqla.FsUserMixin):
             followers, (followers.c.followed_id == Post.user_id)).filter(
             followers.c.follower_id == self.id).order_by(
             Post.created_at.desc())
+
+    @classmethod
+    def is_name_exist(cls, name):
+        if cls.query.filter_by(username=name).count():
+            return True
 
     def avatar(self, size=32, user=None):
         if not user:

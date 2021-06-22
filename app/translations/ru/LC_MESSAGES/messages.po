@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-06-21 21:33+0300\n"
-"PO-Revision-Date: 2021-06-21 21:33+0300\n"
+"POT-Creation-Date: 2021-06-22 08:12+0300\n"
+"PO-Revision-Date: 2021-06-22 08:12+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
 "Language-Team: ru <LL@li.org>\n"
@@ -19,57 +19,59 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: app/forms.py:22
-msgid "Username already exists!"
-msgstr "Имя пользователя существует!"
+#: app/main/forms.py:20
+msgid "You must fill in at least one field"
+msgstr "Вы должны заполнить хотя бы одно поле"
 
-#: app/forms.py:40
-msgid "Form is empty!"
-msgstr "Заполните форму!"
-
-#: app/forms.py:53 app/forms.py:57
+#: app/main/forms.py:33 app/security2/forms.py:29
 msgid "Username"
 msgstr "Имя пользователя"
 
-#: app/forms.py:58
+#: app/main/forms.py:34
 msgid "About"
 msgstr "Обо мне"
 
-#: app/forms.py:59
+#: app/main/forms.py:35
 msgid "Add image"
 msgstr "Добавить изображение"
 
-#: app/forms.py:59
+#: app/main/forms.py:35
 msgid "Images only!"
-msgstr "Только изображения!"
+msgstr "Только изображения"
 
-#: app/forms.py:60
+#: app/main/forms.py:36
 msgid "Apply"
-msgstr "Применить!"
+msgstr "Примениить"
 
-#: app/forms.py:64
+#: app/main/forms.py:40
 msgid "Title"
 msgstr "Заголовок"
 
-#: app/forms.py:65 app/templates/_articles.html:2 app/templates/new_post.html:7
+#: app/main/forms.py:41 app/templates/_articles.html:2
+#: app/templates/new_post.html:7
 msgid "New post"
 msgstr "Новый пост"
 
-#: app/forms.py:66 app/forms.py:71
+#: app/main/forms.py:42 app/main/forms.py:47
 msgid "Submit"
 msgstr "Отправить"
 
-#: app/forms.py:70
+#: app/main/forms.py:46
 msgid "Your comment"
 msgstr "Ваш комментарий"
 
-#: app/views.py:74
+#: app/main/views.py:73
 msgid "Changes saved."
 msgstr "Изменения сохранены"
 
-#: app/templates/error.html:6 app/templates/error.html:9 app/views.py:78
+#: app/main/views.py:77 app/templates/errors/error.html:6
+#: app/templates/errors/error.html:9
 msgid "Error"
 msgstr "Ошибка"
+
+#: app/security2/forms.py:18
+msgid "Username already exist"
+msgstr "Имя пользователя занято"
 
 #: app/templates/_articles.html:3
 msgid "Profile"
@@ -107,15 +109,23 @@ msgstr "Вход"
 msgid "Search"
 msgstr "Искать"
 
-#: app/templates/error.html:7
-msgid "Page Not Found"
-msgstr "Страницп не найдена"
+#: app/templates/_pills.html:1
+msgid "Posts"
+msgstr "Посты"
 
-#: app/templates/error.html:10
-msgid "Internal server error"
-msgstr "Внутренняя ошибка сервера"
+#: app/templates/_pills.html:1
+msgid "Comments"
+msgstr "Комментарии"
 
 #: app/templates/subscriptions.html:17
 msgid "Subscribers"
 msgstr "Подписчики"
+
+#: app/templates/errors/error.html:7
+msgid "Page Not Found"
+msgstr "Страница не найлена"
+
+#: app/templates/errors/error.html:10
+msgid "Internal server error"
+msgstr "Внутренняя ошибка сервера"
 

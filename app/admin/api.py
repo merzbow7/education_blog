@@ -3,9 +3,6 @@ from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from flask_security import current_user
 
-from app import app, db
-from app.models import User, Role, Post, Comment
-
 
 class AccessModelView:
     def is_accessible(self):
@@ -36,13 +33,13 @@ class AdminIndex(AccessModelView, AdminIndexView):
 
 
 class PostModelView(BaseAdminModelView):
-    column_list = ('title', 'body')
+    column_list = ('title', 'body', 'user.username')
     form_columns = ('user_id', 'hash_name', 'title', 'body')
 
 
 class UserModelView(BaseAdminModelView):
-    column_list = ['email', 'active']
-    form_columns = ['email', 'active']
+    column_list = ['email', 'active', 'roles']
+    form_columns = ['email', 'active', 'roles']
 
 
 class RoleModelView(BaseAdminModelView):
@@ -50,13 +47,5 @@ class RoleModelView(BaseAdminModelView):
 
 
 class CommentModelView(BaseAdminModelView):
+    column_list = ('body', 'user.username')
     form_columns = ['body']
-    column_list = ['body']
-
-
-admin = Admin(app, "Admin", url='/admin', index_view=AdminIndex())
-
-admin.add_view(UserModelView(User, db.session))
-admin.add_view(RoleModelView(Role, db.session))
-admin.add_view(CommentModelView(Comment, db.session))
-admin.add_view(PostModelView(Post, db.session))

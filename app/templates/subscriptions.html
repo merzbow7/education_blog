@@ -7,7 +7,7 @@
             <h5 class="text-center fst-italic">{{_("Subscriptions")}}</h5>
             <ul class="list-group">
                 {% for user in current_user.followed.all() %}
-                    <a class="text-decoration-none" href="{{ url_for("profile", username=user.username) }}">
+                    <a class="text-decoration-none" href="{{ url_for("main.profile", username=user.username) }}">
                         <li class="list-group-item">{{ user.username }}</li>
                     </a>
                 {% endfor %}
@@ -16,7 +16,7 @@
         <div class="col-md">
             <h5 class="text-center fst-italic">{{ _("Subscribers") }}</h5>
             {% for user in current_user.followers.all() %}
-                <a class="text-decoration-none" href="{{ url_for("profile", username=user.username) }}">
+                <a class="text-decoration-none" href="{{ url_for("main.profile", username=user.username) }}">
                     <li class="list-group-item">{{ user.username }}</li>
                 </a>
             {% endfor %}

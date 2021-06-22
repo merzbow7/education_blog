@@ -2,7 +2,7 @@
 
 {% block content %}
     {% for post in page.items %}
-        {% set post_href = url_for("post", post_hash=post.hash_name) %}
+        {% set post_href = url_for("main.post", post_hash=post.hash_name) %}
         <article class="blog-post shadow p-3 mb-5 bg-body rounded"
                  onclick="window.location.href = '{{ post_href }}'">
             <a class="text-decoration-none link-dark" href="{{ post_href }}">
@@ -11,7 +11,7 @@
             <p class="blog-post-meta">{{ moment(post.created_at).calendar() }}
                 {% set user_profile = post.user.username %}
                 <a class="px-3"
-                   href="{{ url_for('profile', username= post.user.username ) }}">{{ post.user.username }}</a>
+                   href="{{ url_for('main.profile', username= post.user.username ) }}">{{ post.user.username }}</a>
             </p>
             <p>{{ post.body }}</p>
             {% set comments_couut = post.comments.all()|length %}

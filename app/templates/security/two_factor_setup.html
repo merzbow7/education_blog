@@ -40,7 +40,7 @@
         {{ render_field_errors(two_factor_setup_form.setup) }}
         {{ render_field(two_factor_setup_form.submit) }}
         {% if chosen_method=="email" and chosen_method in choices %}
-            <p>{{ _fsdomain("To complete logging in, please enter the code sent to your mail") }}</p>
+            <p>{{ _fsdomain("To complete security2 in, please enter the code sent to your mail") }}</p>
         {% endif %}
         {% if chosen_method=="authenticator" and chosen_method in choices %}
           <hr>

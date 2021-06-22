@@ -1,13 +1,13 @@
 {% set nav = {
-  "blog": {
+  "main.blog": {
     "name": _("My blog"),
     "active": "active",
   },
-  "feed": {
+  "main.feed": {
     "name": _("Feed"),
     "active": "",
   },
-  "links": {
+  "main.links": {
     "name": _("Links"),
     "active": "",
   }
@@ -15,7 +15,7 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
     <div class="container-fluid">
         {% set ggg = 123 %}
-        <a class="navbar-brand" href="{{ url_for('index') }}">{{ _("Blogs") }}</a>
+        <a class="navbar-brand" href="{{ url_for('main.index') }}">{{ _("Blogs") }}</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -50,10 +50,10 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                             <li><a class="dropdown-item"
-                                   href="{{ url_for('set_language', language="ru", next=request.url) }}">{{ lang["ru"] }}</a>
+                                   href="{{ url_for('main.set_language', language="ru", next=request.url) }}">{{ lang["ru"] }}</a>
                             </li>
                             <li><a class="dropdown-item"
-                                   href="{{ url_for('set_language', language="en", next=request.url) }}">{{ lang["en"] }}</a>
+                                   href="{{ url_for('main.set_language', language="en", next=request.url) }}">{{ lang["en"] }}</a>
                             </li>
                         </ul>
                     </li>
@@ -61,7 +61,7 @@
             </ul>
             {% if current_user and not current_user.is_anonymous %}
                 {% set name_user = current_user.username %}
-                {% set href = url_for('private_profile') %}
+                {% set href = url_for('main.private_profile') %}
             {% else %}
                 {% set name_user =  _('Login') %}
                 {% set href = url_for_security('login') %}
