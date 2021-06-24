@@ -1,7 +1,6 @@
 import base64
 from datetime import datetime
 
-
 from flask import render_template, redirect, url_for, abort, request, flash, jsonify, session, current_app
 from flask_security import current_user, auth_required
 from flask_babelex import get_locale, gettext
@@ -21,6 +20,9 @@ def set_language(language=None):
 
 @bp.before_request
 def before_request():
+
+
+
     session["lang"] = str(get_locale())
     if current_user.is_authenticated:
         current_user.last_login_at = datetime.utcnow()
