@@ -1,5 +1,5 @@
 from flask import request, redirect, abort, url_for
-from flask_admin import Admin, AdminIndexView
+from flask_admin import AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from flask_security import current_user
 
@@ -34,6 +34,7 @@ class AdminIndex(AccessModelView, AdminIndexView):
 
 class PostModelView(BaseAdminModelView):
     column_list = ('title', 'body', 'user.username')
+    column_labels = {'user.username': 'Username'}
     form_columns = ('user_id', 'hash_name', 'title', 'body')
 
 
@@ -48,4 +49,5 @@ class RoleModelView(BaseAdminModelView):
 
 class CommentModelView(BaseAdminModelView):
     column_list = ('body', 'user.username')
+    column_labels = {'user.username': 'Username'}
     form_columns = ['body']

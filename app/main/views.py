@@ -1,16 +1,16 @@
 import base64
 from datetime import datetime
-import psycopg2.errors
+
 
 from flask import render_template, redirect, url_for, abort, request, flash, jsonify, session, current_app
 from flask_security import current_user, auth_required
 from flask_babelex import get_locale, gettext
 
-from app import db, babel
+from app import db
 from app.main import bp
-from app.models import Post, Comment, User
 from app.main.forms import AddNewPostForm, AddCommentForm, ProfileForm
 from app.main.utils import add_to_db, get_post_hash
+from app.models import Post, Comment, User
 
 
 @bp.route('/language/<language>')
@@ -32,7 +32,7 @@ def index():
     posts = Post.query.order_by(Post.created_at.desc())
     c_page = request.args.get('page', 1, type=int)
     page = posts.paginate(c_page, current_app.config["POSTS_PER_PAGE"], False)
-    return render_template("index.html", page=page)
+    return render_template("main/index.html", page=page)
 
 
 @bp.route("/blog")
@@ -41,7 +41,7 @@ def blog():
     posts = Post.query.filter_by(user_id=current_user.id).order_by(Post.created_at.desc())
     c_page = request.args.get('page', 1, type=int)
     page = posts.paginate(c_page, current_app.config["POSTS_PER_PAGE"], False)
-    return render_template("index.html", page=page)
+    return render_template("main/index.html", page=page)
 
 
 @bp.route("/feed")
@@ -50,7 +50,7 @@ def feed():
     posts = current_user.followed_posts()
     c_page = request.args.get('page', 1, type=int)
     page = posts.paginate(c_page, current_app.config["POSTS_PER_PAGE"], False)
-    return render_template("index.html", page=page)
+    return render_template("main/index.html", page=page)
 
 
 @bp.route("/profile", methods=["POST", "GET"])
@@ -75,7 +75,7 @@ def private_profile():
             db.session.rollback()
             flash(gettext('Error'), "danger")
             current_app.logger.error(f"sql error: {err.args}")
-    return render_template("edit_profile.html", form=profile_form)
+    return render_template("main/edit_profile.html", form=profile_form)
 
 
 @bp.route("/profile/<username>")
@@ -88,11 +88,10 @@ def profile(username):
         else:
             avatar = False
         tab = request.args.get("tab", "Posts")
-
         c_page = request.args.get('page', 1, type=int)
         page = eval(tab[:-1]).query.filter_by(user_id=user_obj.id).paginate(c_page, 8, False)
         params = {"username": username, "tab": tab}
-        return render_template("public_profile.html", user=user_obj, avatar=avatar, tab=tab,
+        return render_template("main/public_profile.html", user=user_obj, avatar=avatar, tab=tab,
                                page=page, params=params)
     else:
         abort(404)
@@ -111,7 +110,7 @@ def post(post_hash):
         c_page = request.args.get('page', 1, type=int)
         page = getting_post.first().comments.paginate(c_page, current_app.config["COMMENTS_PER_PAGE"], False)
         params = {"post_hash": post_hash}
-        return render_template("post.html", post=getting_post.first(),
+        return render_template("main/post.html", post=getting_post.first(),
                                add_comment_form=comment_form, page=page, params=params)
     else:
         return abort(404)
@@ -126,13 +125,13 @@ def new_post():
                     user_id=current_user.id, hash_name=get_post_hash())
         add_to_db(post)
         return redirect(url_for("main.blog"))
-    return render_template("new_post.html", add_post_form=post_form)
+    return render_template("main/new_post.html", add_post_form=post_form)
 
 
 @bp.route("/subscriptions")
 @auth_required('token', 'session')
 def subscriptions():
-    return render_template("subscriptions.html")
+    return render_template("main/subscriptions.html")
 
 
 @bp.route("/subscribe")
@@ -158,4 +157,4 @@ def links():
     links = (
         "https://flask-migrate.readthedocs.io/en/latest/",
         "https://flask-security-too.readthedocs.io/en/stable/index.html")
-    return render_template("links.html", links=links)
+    return render_template("main/links.html", links=links)

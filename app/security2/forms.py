@@ -1,4 +1,4 @@
-from flask_babel import lazy_gettext as _l
+from flask_babelex import lazy_gettext as _l
 from flask_security import RegisterForm, current_user
 
 from wtforms import StringField
@@ -18,9 +18,7 @@ class UniqueUserNameRequired(object):
             self.message = _l('Username already exist')
 
     def __call__(self, form, field):
-        print(f'pre field data: {field.data}')
         if field.data:
-            print(f'field data: {field.data}')
             if current_user.is_name_exist(field.data):
                 raise StopValidation(self.message)
 

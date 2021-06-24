@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-06-22 08:12+0300\n"
+"POT-Creation-Date: 2021-06-23 20:07+0300\n"
 "PO-Revision-Date: 2021-06-22 08:12+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -19,11 +19,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
+#: app/errors/handlers.py:10
+msgid "Page Not Found"
+msgstr "Страница не найлена"
+
+#: app/errors/handlers.py:19
+msgid "Internal server error"
+msgstr "Внутренняя ошибка сервера"
+
+#: app/errors/handlers.py:28
+msgid "Forbidden"
+msgstr "Запрещено"
+
+#: app/errors/handlers.py:29
+msgid "You do not have permission to access the requested resource"
+msgstr "У вас нет прав на доступ к запрошенному ресурсу"
+
 #: app/main/forms.py:20
 msgid "You must fill in at least one field"
 msgstr "Вы должны заполнить хотя бы одно поле"
 
-#: app/main/forms.py:33 app/security2/forms.py:29
+#: app/main/forms.py:33 app/security2/forms.py:27
 msgid "Username"
 msgstr "Имя пользователя"
 
@@ -47,8 +63,8 @@ msgstr "Примениить"
 msgid "Title"
 msgstr "Заголовок"
 
-#: app/main/forms.py:41 app/templates/_articles.html:2
-#: app/templates/new_post.html:7
+#: app/main/forms.py:41 app/templates/main/_articles.html:2
+#: app/templates/main/new_post.html:7
 msgid "New post"
 msgstr "Новый пост"
 
@@ -60,12 +76,11 @@ msgstr "Отправить"
 msgid "Your comment"
 msgstr "Ваш комментарий"
 
-#: app/main/views.py:73
+#: app/main/views.py:72
 msgid "Changes saved."
 msgstr "Изменения сохранены"
 
-#: app/main/views.py:77 app/templates/errors/error.html:6
-#: app/templates/errors/error.html:9
+#: app/main/views.py:76 app/templates/errors/error.html:5
 msgid "Error"
 msgstr "Ошибка"
 
@@ -73,59 +88,51 @@ msgstr "Ошибка"
 msgid "Username already exist"
 msgstr "Имя пользователя занято"
 
-#: app/templates/_articles.html:3
+#: app/templates/main/_articles.html:3
 msgid "Profile"
 msgstr "Профиль"
 
-#: app/templates/_articles.html:4 app/templates/subscriptions.html:7
+#: app/templates/main/_articles.html:4 app/templates/main/subscriptions.html:7
 msgid "Subscriptions"
 msgstr "Подписки"
 
-#: app/templates/_articles.html:5
+#: app/templates/main/_articles.html:5
 msgid "Exit"
 msgstr "Выход"
 
-#: app/templates/_navigation.html:3
+#: app/templates/main/_navigation.html:3
 msgid "My blog"
 msgstr "Мой блог"
 
-#: app/templates/_navigation.html:7
+#: app/templates/main/_navigation.html:7
 msgid "Feed"
 msgstr "Лента"
 
-#: app/templates/_navigation.html:11
+#: app/templates/main/_navigation.html:11
 msgid "Links"
 msgstr "Ссылки"
 
-#: app/templates/_navigation.html:18
+#: app/templates/main/_navigation.html:18
 msgid "Blogs"
 msgstr "Блоги"
 
-#: app/templates/_navigation.html:66
+#: app/templates/main/_navigation.html:65
 msgid "Login"
 msgstr "Вход"
 
-#: app/templates/_navigation.html:74
+#: app/templates/main/_navigation.html:73
 msgid "Search"
 msgstr "Искать"
 
-#: app/templates/_pills.html:1
+#: app/templates/main/_pills.html:1
 msgid "Posts"
 msgstr "Посты"
 
-#: app/templates/_pills.html:1
+#: app/templates/main/_pills.html:1
 msgid "Comments"
 msgstr "Комментарии"
 
-#: app/templates/subscriptions.html:17
+#: app/templates/main/subscriptions.html:17
 msgid "Subscribers"
 msgstr "Подписчики"
-
-#: app/templates/errors/error.html:7
-msgid "Page Not Found"
-msgstr "Страница не найлена"
-
-#: app/templates/errors/error.html:10
-msgid "Internal server error"
-msgstr "Внутренняя ошибка сервера"
 

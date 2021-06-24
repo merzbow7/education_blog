@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "main/base.html" %}
 
 {% from "security/_macros.html" import render_field_with_errors, render_field %}
 
@@ -19,7 +19,7 @@
                 </li>
             {% endfor %}
         </ul>
-        {% include "_pagenation.html" %}
+        {% include "main/_pagenation.html" %}
         {% if current_user.is_authenticated %}
             <form class="form-row" action="" method="POST">
                 {{ add_comment_form.hidden_tag() }}

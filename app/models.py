@@ -12,7 +12,6 @@ followers = db.Table('followers',
 
 
 class Role(db.Model, fsqla.FsRoleMixin):
-    __tablename__ = 'role'
     id = Column(Integer(), primary_key=True)
     name = Column(String(80), unique=True)
     description = Column(String(255))
@@ -38,6 +37,9 @@ class User(db.Model, fsqla.FsUserMixin):
                                secondaryjoin=(followers.c.followed_id == id),
                                backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
 
+    def set_password(self):
+        pass
+
     def follow(self, user):
         if not self.is_following(user):
             self.followed.append(user)
@@ -61,15 +63,12 @@ class User(db.Model, fsqla.FsUserMixin):
         if cls.query.filter_by(username=name).count():
             return True
 
-    def avatar(self, size=32, user=None):
-        if not user:
-            user = User
-        digest = md5(str(user.email + user.username).encode('utf-8')).hexdigest()
+    def avatar(self, size=32):
+        digest = md5(str(self.email + self.username).encode('utf-8')).hexdigest()
         return f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={size}'
 
 
 class Post(db.Model):
-    __tablename__ = 'post'
     id = Column(Integer(), primary_key=True)
     hash_name = Column(String(25), unique=True, nullable=False)
     title = Column(String(50))
@@ -80,7 +79,6 @@ class Post(db.Model):
 
 
 class Comment(db.Model):
-    __tablename__ = 'comment'
     id = Column(Integer(), primary_key=True)
     post_id = Column(Integer(), ForeignKey('post.id'))
     user_id = Column(Integer(), ForeignKey('user.id'))

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "main/base.html" %}
 
 {% block content %}
     <script src="{{ url_for("static", filename="js/blog.js") }}"></script>
@@ -9,7 +9,7 @@
                     {% if avatar %}
                         <img class="img-96" src="data:;base64,{{ avatar }}"/>
                     {% else %}
-                        <img src="{{ user.avatar(96, user=user) }}">
+                        <img src="{{ user.avatar(96) }}">
                     {% endif %}
                 </div>
                 <div class="text-center mt-3">
@@ -29,13 +29,13 @@
                     {% set friendship = "bi-person-plus" %}
                     {% set color = "success" %}
                 {% endif %}
-                {% from "_button.html" import button_subscribe %}
+                {% from "main/_button.html" import button_subscribe %}
                 {{ button_subscribe(user, color, friendship) }}
             </p>
             <p class="mb-0">{{ user.about }} </p>
         </div>
         <div class="container">
-            {% include "_pills.html" %}
+            {% include "main/_pills.html" %}
             <div class="col-md shadow-primary border-primary">
                 {% if page %}
                     <ul class="list-group"></ul>
@@ -56,7 +56,7 @@
                 {% endif %}
             </div>
             <p></p>
-            {% include "_pagenation.html" %}
+            {% include "main/_pagenation.html" %}
         </div>
     </div>
 {% endblock %}

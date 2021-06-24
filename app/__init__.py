@@ -2,8 +2,9 @@ import logging
 from logging.handlers import SMTPHandler, RotatingFileHandler
 from pathlib import Path
 
-from flask import Flask, request, session, current_app
+from flask import Flask, request, session, current_app, url_for
 from flask_admin import Admin
+from flask_admin.menu import MenuLink
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_mail import Mail
@@ -18,7 +19,7 @@ from app.security2 import ExtendedRegisterForm
 
 db = SQLAlchemy()
 migrate = Migrate()
-admin = Admin()
+admin = Admin(name='Merzbow', template_mode='bootstrap4')
 security = Security()
 mail = Mail()
 moment = Moment()
@@ -32,7 +33,6 @@ def create_app(config_class=Configuration):
     db.init_app(app)
     fsqla.FsModels.set_db_info(db)
     migrate.init_app(app, db)
-
     mail.init_app(app)
     moment.init_app(app)
 
@@ -43,13 +43,14 @@ def create_app(config_class=Configuration):
     user_datastore = SQLAlchemyUserDatastore(db, User, Role)
     security.init_app(app, user_datastore, register_form=ExtendedRegisterForm)
 
-    admin.template_mode = "Bootstrap3"
     admin.init_app(app=app, url='/admin', index_view=AdminIndex())
 
-    admin.add_view(UserModelView(User, db.session))
-    admin.add_view(RoleModelView(Role, db.session))
-    admin.add_view(CommentModelView(Comment, db.session))
-    admin.add_view(PostModelView(Post, db.session))
+    admin.add_views(UserModelView(User, db.session),
+                    RoleModelView(Role, db.session),
+                    CommentModelView(Comment, db.session),
+                    PostModelView(Post, db.session), )
+
+    admin.add_link(MenuLink(name='Blogs', category='', url='/'))
 
     from app.errors import bp as errors_bp
     app.register_blueprint(errors_bp)
@@ -57,7 +58,7 @@ def create_app(config_class=Configuration):
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
 
-    if app.config['PROJECT_LOGGING_EMAIL']:
+    if app.config['PROJECT_LOGGING_EMAIL'] and not app.config["TESTING"]:
         if app.config['MAIL_SERVER']:
             auth = None
             if app.config['MAIL_USERNAME'] or app.config['MAIL_PASSWORD']:
@@ -73,7 +74,7 @@ def create_app(config_class=Configuration):
             mail_handler.setLevel(logging.ERROR)
             app.logger.addHandler(mail_handler)
 
-    if app.config['PROJECT_LOGGING_FILE']:
+    if app.config['PROJECT_LOGGING_FILE'] and not app.config["TESTING"]:
         path_dir_log = Path(app.root_path) / "logs"
         file_log = path_dir_log / "blog.log"
         if not path_dir_log.exists():

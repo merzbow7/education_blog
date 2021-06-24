@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "main/base.html" %}
 
 {% block content %}
     {% for post in page.items %}
@@ -19,5 +19,5 @@
                 Комментариев: {{ comments_couut }}</p>
         </article>
     {% endfor %}
-    {% include "_pagenation.html" %}
+    {% include "main/_pagenation.html" %}
 {% endblock %}
