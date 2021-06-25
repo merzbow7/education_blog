@@ -18,8 +18,10 @@ class UniqueUserNameRequired(object):
             self.message = _l('Username already exist')
 
     def __call__(self, form, field):
+
         if field.data:
-            if current_user.is_name_exist(field.data):
+            from app.models import User
+            if User.is_name_exist(field.data):
                 raise StopValidation(self.message)
 
 
