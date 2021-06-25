@@ -75,20 +75,24 @@ def create_app(config_class=Configuration):
             app.logger.addHandler(mail_handler)
 
     if app.config['PROJECT_LOGGING_FILE'] and not app.config["TESTING"]:
-        path_dir_log = Path(app.root_path) / "logs"
-        file_log = path_dir_log / "blog.log"
-        if not path_dir_log.exists():
-            path_dir_log.mkdir()
-        file_handler = RotatingFileHandler(file_log, maxBytes=10240,
-                                           backupCount=10)
-        file_handler.setFormatter(logging.Formatter(
-            '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
-        file_handler.setLevel(logging.INFO)
-        app.logger.addHandler(file_handler)
-        app.logger.setLevel(logging.INFO)
+        if app.config['LOG_TO_STDOUT']:
+            stream_handler = logging.StreamHandler()
+            stream_handler.setLevel(logging.INFO)
+            app.logger.addHandler(stream_handler)
+        else:
+            path_dir_log = Path(app.root_path) / "logs"
+            file_log = path_dir_log / "blog.log"
+            if not path_dir_log.exists():
+                path_dir_log.mkdir()
+            file_handler = RotatingFileHandler(file_log, maxBytes=10240,
+                                               backupCount=10)
+            file_handler.setFormatter(logging.Formatter(
+                '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+            file_handler.setLevel(logging.INFO)
+            app.logger.addHandler(file_handler)
+            app.logger.setLevel(logging.INFO)
         if not app.debug:
             app.logger.info('flask blog startup')
-
     return app
 
 
