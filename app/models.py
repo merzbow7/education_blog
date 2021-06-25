@@ -2,12 +2,12 @@ from app import db
 from flask_security.models import fsqla_v2 as fsqla
 from hashlib import md5
 from sqlalchemy.orm import relationship, backref
-from sqlalchemy import Boolean, DateTime, Column, Integer, String, ForeignKey, Text, LargeBinary, Table
+from sqlalchemy import Boolean, DateTime, Column, Integer, String, ForeignKey, Text, LargeBinary
 from datetime import datetime
 
-followers = Table('followers',
-                     Column('follower_id', Integer, ForeignKey('user.id')),
-                     Column('followed_id', Integer, ForeignKey('user.id'))
+followers = db.Table('followers',
+                     db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
+                     db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
                      )
 
 
