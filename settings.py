@@ -9,7 +9,7 @@ if files:
 
 class Configuration(object):
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'abra-cadabra-ahalay-mohalay'
-    DEBUG = True
+    DEBUG = os.environ.get('FLASK_PROJECT_DEBUG') or False
     TESTING = False
 
     # sqlalchemy
