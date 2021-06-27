@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-06-23 20:07+0300\n"
+"POT-Creation-Date: 2021-06-25 05:05+0300\n"
 "PO-Revision-Date: 2021-06-22 08:12+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -39,7 +39,7 @@ msgstr "У вас нет прав на доступ к запрошенному 
 msgid "You must fill in at least one field"
 msgstr "Вы должны заполнить хотя бы одно поле"
 
-#: app/main/forms.py:33 app/security2/forms.py:27
+#: app/main/forms.py:33 app/security2/forms.py:29
 msgid "Username"
 msgstr "Имя пользователя"
 
@@ -76,11 +76,11 @@ msgstr "Отправить"
 msgid "Your comment"
 msgstr "Ваш комментарий"
 
-#: app/main/views.py:72
+#: app/main/views.py:74
 msgid "Changes saved."
 msgstr "Изменения сохранены"
 
-#: app/main/views.py:76 app/templates/errors/error.html:5
+#: app/main/views.py:78 app/templates/errors/error.html:5
 msgid "Error"
 msgstr "Ошибка"
 
@@ -116,7 +116,7 @@ msgstr "Ссылки"
 msgid "Blogs"
 msgstr "Блоги"
 
-#: app/templates/main/_navigation.html:65
+#: app/templates/main/_navigation.html:62
 msgid "Login"
 msgstr "Вход"
 
@@ -131,6 +131,10 @@ msgstr "Посты"
 #: app/templates/main/_pills.html:1
 msgid "Comments"
 msgstr "Комментарии"
+
+#: app/templates/main/public_profile.html:24
+msgid "last seen"
+msgstr "последний раз видели"
 
 #: app/templates/main/subscriptions.html:17
 msgid "Subscribers"

@@ -1,0 +1,6 @@
+{% macro build_user(user) %}
+    <a class="link-popover" data-bs-toggle="popover"
+       href="{{ url_for('main.profile', username=user.username ) }}">{{ user.username }}
+    </a>
+{% endmacro %}
+

@@ -26,3 +26,45 @@ function sleep(miliseconds) {
     while (currentTime + miliseconds >= new Date().getTime()) {
     }
 }
+
+
+function getPopover() {
+    if (!this.popper) {
+        let url = "/popover/" + this.textContent;
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
+                let template = "<div class='popover-body p-0' role='tooltip'><div class='popover-body'></div></div>"
+                let config = {html: true, content: data, template: template};
+                this.popper = new bootstrap.Popover(this, config);
+                this.popper.show();
+                popperTime();
+            });
+    } else {
+        this.popper.show()
+        popperTime();
+    }
+}
+
+
+function popperTime() {
+    let time = document.querySelector('p.mb-2 span.ms-4 span.flask-moment');
+    if (time) {
+        time.textContent = moment(time.textContent, "YYYY-MM-DDThh:mm:ssZ").fromNow()
+    }
+
+}
+
+function hidePopover() {
+    this.popper?.hide()
+}
+
+let popoverTriggerList = Array.from(document.querySelectorAll('[data-bs-toggle="popover"]'))
+popoverTriggerList.map(function (node) {
+    node.onmouseenter = getPopover;
+    node.onmouseleave = hidePopover;
+})
+
+
+
+

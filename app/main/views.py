@@ -20,9 +20,6 @@ def set_language(language=None):
 
 @bp.before_request
 def before_request():
-
-
-
     session["lang"] = str(get_locale())
     if current_user.is_authenticated:
         current_user.last_login_at = datetime.utcnow()
@@ -94,7 +91,21 @@ def profile(username):
         page = eval(tab[:-1]).query.filter_by(user_id=user_obj.id).paginate(c_page, 8, False)
         params = {"username": username, "tab": tab}
         return render_template("main/public_profile.html", user=user_obj, avatar=avatar, tab=tab,
-                               page=page, params=params)
+                               need_extends=True, page=page, params=params)
+    else:
+        abort(404)
+
+
+@bp.route("/popover/<username>")
+@auth_required('token', 'session')
+def popover(username):
+    user_obj = User.query.filter_by(username=username).first()
+    if user_obj:
+        if user_obj.user_avatar:
+            avatar = base64.b64encode(user_obj.user_avatar).decode('ascii')
+        else:
+            avatar = False
+        return render_template("main/_min_profile.html", user=user_obj, avatar=avatar)
     else:
         abort(404)
 

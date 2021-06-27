@@ -6,14 +6,15 @@
     <article class="blog-post">
         <h2 class="blog-post-title">{{ post.title }}</h2>
         <p>{{ post.body }}</p>
-
         <ul class="list-group">
             {% for comment in page.items %}
                 <li class="list-group-item border-0">
                     <p>
-                        <img class="inline-img" src="{{ comment.user.avatar() }}"
-                             alt="{{ comment.user.username }}">
-                        <b class="me-3">{{ comment.user.username }}</b>{{ moment(comment.created_at).calendar() }}
+                        <img class="inline-img" src="{{ comment.user.avatar() }}">
+                        <b class="me-3">
+                            {% from "main/_username.html" import build_user %}
+                            {{ build_user(comment.user) }}
+                        </b>{{ moment(comment.created_at).calendar() }}
                     </p>
                     <p class="border-bottom border-3 mb-2">{{ comment.body }}</p>
                 </li>

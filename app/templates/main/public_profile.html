@@ -1,62 +1,36 @@
 {% extends "main/base.html" %}
-
 {% block content %}
-    <script src="{{ url_for("static", filename="js/blog.js") }}"></script>
     <div class="row">
-        <div class="border border-3 p-2 mb-4 shadow p-3 mb-5 bg-body rounded">
-            <picture class="float-start me-2">
-                <div>
-                    {% if avatar %}
-                        <img class="img-96" src="data:;base64,{{ avatar }}"/>
-                    {% else %}
-                        <img src="{{ user.avatar(96) }}">
-                    {% endif %}
+        {% block profile_base %}
+            {% include "main/_min_profile.html" %}
+        {% endblock %}
+        {% if need_extends %}
+            {% block profile_extend %}
+                <div class="container">
+                    {% include "main/_pills.html" %}
+                    <div class="col-md shadow-primary border-primary">
+                        {% if page %}
+                            <ul class="list-group"></ul>
+                            {% for item in page.items %}
+                                <li class="list-group-item border-0">
+                                    {% if item.title %}
+                                        <a class="link-secondary text-decoration-none"
+                                           href="{{ url_for("main.post", post_hash=item.hash_name) }}">
+                                        {{ item.title }}
+                                    {% else %}
+                                        <a class="link-secondary text-decoration-none"
+                                           href="{{ url_for("main.post", post_hash=item.post.hash_name) }}">
+                                        {{ item.body }}
+                                    {% endif %}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <p></p>
+                    {% include "main/_pagenation.html" %}
                 </div>
-                <div class="text-center mt-3">
-                    {% if current_user == user %}
-                        <a href="{{ url_for("main.private_profile") }}">
-                            <button class="btn btn-outline-primary bi bi-pencil-square">Edit</button>
-                        </a>
-                    {% endif %}
-                </div>
-            </picture>
-            <p class="mb-2"><b>{{ user.username }}</b>
-                <span class="ms-4"><i>last seen: </i>{{ moment(user.last_login_at).fromNow() }}</span>
-                {% if current_user.is_following(user) %}
-                    {% set friendship = "bi-person-dash" %}
-                    {% set color = "danger" %}
-                {% else %}
-                    {% set friendship = "bi-person-plus" %}
-                    {% set color = "success" %}
-                {% endif %}
-                {% from "main/_button.html" import button_subscribe %}
-                {{ button_subscribe(user, color, friendship) }}
-            </p>
-            <p class="mb-0">{{ user.about }} </p>
-        </div>
-        <div class="container">
-            {% include "main/_pills.html" %}
-            <div class="col-md shadow-primary border-primary">
-                {% if page %}
-                    <ul class="list-group"></ul>
-                    {% for item in page.items %}
-                        <li class="list-group-item border-0">
-                            {% if item.title %}
-                                <a class="link-secondary text-decoration-none"
-                                   href="{{ url_for("main.post", post_hash=item.hash_name) }}">
-                                {{ item.title }}
-                            {% else %}
-                                <a class="link-secondary text-decoration-none"
-                                   href="{{ url_for("main.post", post_hash=item.post.hash_name) }}">
-                                {{ item.body }}
-                            {% endif %}
-                            </a>
-                        </li>
-                    {% endfor %}
-                {% endif %}
-            </div>
-            <p></p>
-            {% include "main/_pagenation.html" %}
-        </div>
+            {% endblock %}
+        {% endif %}
     </div>
 {% endblock %}

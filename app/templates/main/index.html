@@ -9,9 +9,8 @@
                 <h2 class="blog-post-title">{{ post.title }}</h2>
             </a>
             <p class="blog-post-meta">{{ moment(post.created_at).calendar() }}
-                {% set user_profile = post.user.username %}
-                <a class="px-3"
-                   href="{{ url_for('main.profile', username= post.user.username ) }}">{{ post.user.username }}</a>
+                {% from "main/_username.html" import build_user %}
+                {{ build_user(post.user) }}
             </p>
             <p>{{ post.body }}</p>
             {% set comments_couut = post.comments.all()|length %}

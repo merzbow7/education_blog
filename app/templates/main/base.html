@@ -8,7 +8,6 @@
     <!-- Bootstrap core CSS -->
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
     <link rel="shortcut icon" href="#">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -32,11 +31,10 @@
     {% block css %}
     {% endblock %}
     {% block scripts %}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         {{ moment.include_moment() }}
         {{ moment.lang(session['lang']) }}
     {% endblock %}
-
-
 </head>
 <body>
 
@@ -62,5 +60,9 @@
         </p>
     {% endblock %}
 </footer>
+<script src="{{ url_for("static", filename="js/blog.js") }}"></script>
+<script>
+
+</script>
 </body>
 </html>

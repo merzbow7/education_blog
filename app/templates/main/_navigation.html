@@ -58,12 +58,12 @@
                     </li>
                 {% endif %}
             </ul>
-            {% if current_user and not current_user.is_anonymous %}
-                {% set name_user = current_user.username %}
-                {% set href = url_for('main.private_profile') %}
-            {% else %}
+            {% if current_user.is_anonymous %}
                 {% set name_user =  _('Login') %}
                 {% set href = url_for_security('login') %}
+            {% else %}
+                {% set name_user = current_user.username %}
+                {% set href = url_for('main.profile', username=name_user) %}
             {% endif %}
             <a class="" href="{{ href }}">
                 <button class="btn btn-outline-secondary" type="submit">{{ name_user }}</button>

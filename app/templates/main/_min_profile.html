@@ -1,0 +1,36 @@
+<div class="border border-3 p-2 mb-4 shadow p-3 mb-5 bg-body rounded">
+    <div class="float-start me-2">
+        {% if need_exteds %}
+            {% set img_size = 94 %}
+        {% else %}
+            {% set img_size = 72 %}
+        {% endif %}
+        <div>
+            <img class="img-fluid" src="{{ user.avatar(img_size) }}">
+        </div>
+        <div class="text-center mt-3">
+            {% if current_user == user %}
+                <a href="{{ url_for("main.private_profile") }}">
+                    <button class="btn btn-outline-primary bi bi-pencil-square">Edit</button>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    <p class="mb-2"><b>{{ user.username }}</b>
+        <span class="ms-4"><i>{{ _('last seen') }}: </i>
+            {{ moment(user.last_login_at).fromNow() }}
+        </span>
+        {% if need_extends %}
+            {% if current_user.is_following(user) %}
+                {% set friendship = "bi-person-dash" %}
+                {% set color = "danger" %}
+            {% else %}
+                {% set friendship = "bi-person-plus" %}
+                {% set color = "success" %}
+            {% endif %}
+            {% from "main/_button.html" import button_subscribe %}
+            {{ button_subscribe(user, color, friendship) }}
+        {% endif %}
+    </p>
+    <p class="mb-0">{{ user.about }} </p>
+</div>
