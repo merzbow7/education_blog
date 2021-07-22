@@ -31,7 +31,7 @@ class Configuration(object):
     SECURITY_SEND_REGISTER_EMAIL = False
 
     # Pagination
-    POSTS_PER_PAGE = 10
+    POSTS_PER_PAGE = 2
     COMMENTS_PER_PAGE = 15
 
     # Logging

@@ -48,7 +48,7 @@ function getPopover() {
 
 
 function popperTime() {
-    let time = document.querySelector('p.mb-2 span.ms-4 span.flask-moment');
+    let time = document.querySelector('span.flask-moment');
     if (time) {
         time.textContent = moment(time.textContent, "YYYY-MM-DDThh:mm:ssZ").fromNow()
     }

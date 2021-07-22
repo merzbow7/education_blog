@@ -2,8 +2,8 @@ import base64
 from datetime import datetime
 
 from flask import render_template, redirect, url_for, abort, request, flash, jsonify, session, current_app
-from flask_security import current_user, auth_required
 from flask_babelex import get_locale, gettext
+from flask_security import current_user, auth_required
 
 from app import db
 from app.main import bp
@@ -26,6 +26,26 @@ def before_request():
         db.session.commit()
 
 
+# @bp.route("/")
+# @bp.route("/blog")
+# @bp.route("/feed")
+# def index():
+#     paths = {
+#         "/": "Post.query.order_by(Post.created_at.desc())",
+#         "/blog": "Post.query.filter_by(user_id=current_user.id).order_by(Post.created_at.desc())",
+#         "/feed": "current_user.followed_posts()",
+#     }
+#     print(request.path)
+#     posts = eval(paths[request.path])
+#     print(post)
+#     c_page = request.args.get('page', 1, type=int)
+#     page = posts.paginate(c_page, current_app.config["POSTS_PER_PAGE"], False)
+#     return render_template("main/index.html", page=page)
+
+
+
+
+
 @bp.route("/")
 def index():
     posts = Post.query.order_by(Post.created_at.desc())
@@ -37,6 +57,7 @@ def index():
 @bp.route("/blog")
 @auth_required('token', 'session')
 def blog():
+    print(request.path)
     posts = Post.query.filter_by(user_id=current_user.id).order_by(Post.created_at.desc())
     c_page = request.args.get('page', 1, type=int)
     page = posts.paginate(c_page, current_app.config["POSTS_PER_PAGE"], False)
@@ -78,7 +99,6 @@ def private_profile():
 
 
 @bp.route("/profile/<username>")
-@auth_required('token', 'session')
 def profile(username):
     user_obj = User.query.filter_by(username=username).first()
     if user_obj:
@@ -97,7 +117,6 @@ def profile(username):
 
 
 @bp.route("/popover/<username>")
-@auth_required('token', 'session')
 def popover(username):
     user_obj = User.query.filter_by(username=username).first()
     if user_obj:

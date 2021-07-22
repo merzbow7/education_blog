@@ -1,43 +1,29 @@
-{% if page %}
-    {% if not page.has_next %}
-        {% set next = 'disabled' %}
-    {% endif %}
-    {% if not page.has_prev %}
-        {% set prev = 'disabled' %}
-    {% endif %}
-    {% if not params %}
-        {% set params = {} %}
-    {% endif %}
+{% if page.pages > 1 %}
+    {% if not params %}{% set params = {} %}{% endif %}
     <div aria-label="Page navigation">
         <ul class="pagination">
-            <li class="page-item {{ prev }}">
-                <a class="page-link" href="{{ url_for(request.endpoint, page=page.prev_num, **params) }}"
-                   aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            {% if not prev %}
-                <li class="page-item"><a class="page-link"
-                                         href="{{ url_for(request.endpoint, page=page.prev_num, **params) }}">
-                    {{ page.prev_num }}</a>
-                </li>
+            {% if not page.has_prev %}
+                <li class="page-item {{ prev }}">
+                    <a class="page-link" href="{{ url_for(request.endpoint, page=page.prev_num, **params) }}"
+                       aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a></li>
             {% endif %}
-            <li class="page-item active"><a class="page-link"
-                                            href="{{ url_for(request.endpoint, page=page.page, **params) }}">
-                {{ page.page }}</a>
-            </li>
-            {% if not next %}
-                <li class="page-item"><a class="page-link"
-                                         href="{{ url_for(request.endpoint, page=page.next_num, **params) }}">
-                    {{ page.next_num }}</a>
-                </li>
+            {% for page_num in range(1,page.pages + 1) %}
+                {% if page.page - 3 < page_num < page.page + 3 %}
+                    <li class="page-item {% if page_num == page.page %}active{% endif %}">
+                        <a class="page-link" href="{{ url_for(request.endpoint, page=page_num, **params) }}">
+                            {{ page_num }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            {% if page.has_next %}
+                <li class="page-item {{ next }}">
+                    <a class="page-link" href="{{ url_for(request.endpoint, page=page.next_num, **params) }}"
+                       aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a></li>
             {% endif %}
-            <li class="page-item {{ next }}">
-                <a class="page-link" href="{{ url_for(request.endpoint, page=page.next_num, **params) }}"
-                   aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
         </ul>
     </div>
 {% endif %}

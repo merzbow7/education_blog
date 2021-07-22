@@ -15,7 +15,7 @@
             <p>{{ post.body }}</p>
             {% set comments_couut = post.comments.all()|length %}
             <p class="blog-post-meta border-2 border-top">
-                Комментариев: {{ comments_couut }}</p>
+                {{ _("Comments") }}: {{ comments_couut }}</p>
         </article>
     {% endfor %}
     {% include "main/_pagenation.html" %}
