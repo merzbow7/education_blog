@@ -1,6 +1,7 @@
 import os
-from dotenv import load_dotenv
 from pathlib import Path
+
+from dotenv import load_dotenv
 
 files = list(Path(__file__).parent.glob('*.env'))
 if files:
@@ -46,3 +47,19 @@ class Configuration(object):
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME') or None
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') or None
     ADMINS = os.environ.get('ADMINS') or None
+
+
+class TestConfig(Configuration):
+    TESTING = True
+
+    SECRET_KEY = "xjvwHvMdkFGdWdyeuqTFIIzJUHiYXgdyg"
+    DEBUG = True
+
+    # sqlalchemy
+    SQLALCHEMY_DATABASE_URI = 'sqlite://'
+    SQLALCHEMY_ECHO = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    # flask security
+    SECURITY_PASSWORD_SALT = "jlk12@f[23;adada^sf}qmldsb"
+    SECURITY_PASSWORD_HASH = "sha256_crypt"

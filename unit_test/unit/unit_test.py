@@ -1,26 +1,11 @@
-from datetime import timedelta, datetime
-from flask_security import hash_password, verify_password
 import unittest
+from datetime import timedelta, datetime
+
+from flask_security import hash_password, verify_password
 
 from app import create_app, db
-from settings import Configuration
-from app.models import User, Role, Comment, Post
-
-
-class TestConfig(Configuration):
-    TESTING = True
-
-    SECRET_KEY = "xjvwHvMdkFGdWdyeuqTFIIzJUHiYXgdyg"
-    DEBUG = True
-
-    # sqlalchemy
-    SQLALCHEMY_DATABASE_URI = 'sqlite://'
-    SQLALCHEMY_ECHO = False
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-
-    # flask security
-    SECURITY_PASSWORD_SALT = "jlk12@f[23;adada^sf}qmldsb"
-    SECURITY_PASSWORD_HASH = "sha256_crypt"
+from app.models import User, Post
+from settings import TestConfig
 
 
 class UserModelCase(unittest.TestCase):
@@ -93,7 +78,6 @@ class UserModelCase(unittest.TestCase):
                   created_at=now + timedelta(seconds=2))
         db.session.add_all([p1, p2, p3, p4])
         db.session.commit()
-
 
         u1.follow(u2)  # john follows susan
         u1.follow(u4)  # john follows david

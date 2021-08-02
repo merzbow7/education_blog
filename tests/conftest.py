@@ -1,7 +1,7 @@
 import pytest
 
 from app import create_app, db
-from unit_test.unit.unit_test import TestConfig
+from settings import TestConfig
 
 
 @pytest.fixture(scope="session")
@@ -20,4 +20,3 @@ def init_db(init_app):
     db.session.remove()
     db.drop_all()
     app_context.pop()
-
